@@ -1,0 +1,15 @@
+
+.cmsindex-maincontainer-div-hidden{
+display: none;
+}
+
+.cmsindex-countertile{
+    min-height: 150px;
+}
+.cmsindex-charts-div{
+    max-width: 600px;
+}
+
+.cmsindex-charts-div div{
+    height: fit-content;
+}

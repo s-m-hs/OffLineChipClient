@@ -1,0 +1,163 @@
+.Chatt-message-btn{
+  /* position: absolute;
+  top: 0px;
+  left: 10px;
+  height: 30px; */
+  width: 30px;
+padding: none !important;
+--bs-btn-padding-x: 0 !important;
+}
+.Chatt-message-swich-btn button{
+  width: 80%;
+  font-size: 18px;
+
+}
+.chat-mention-div{
+  position: absolute;
+  background-color: rgb(199, 245, 241);
+  min-width: 100px;
+  border-radius: 5px;
+  right: 20px;
+  bottom: 0
+
+}
+
+.Chatt-message-div-input {
+  height: 150px;
+  width: 90%;
+    margin: 0 auto;
+border-radius: 5px;
+outline: none;
+
+}
+.Chatt-message-div-btn{
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+
+
+/* div پیام */
+.Chatt-message-div {
+    flex: 0 0 0%;
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.4s ease;
+
+    display: flex;
+    flex-direction: column;   /* مهم */
+    height: 100%; 
+    width: 50% !important;
+}
+
+/* وقتی نمایش داده میشه */
+.Chatt-message-div.show {
+    flex: 0 0 25%;
+    opacity: 1;
+    padding: 10px;
+    width: 100px;
+
+
+}
+.Chatt-message-div-A-chat{
+  position: relative;
+  width: 100%;
+}
+.Chatt-message-div-chat{
+  padding: 5px;
+  padding-top: 10px;
+  margin: 0 auto;
+  border: 1px solid ;
+  border-bottom: none;
+  border-radius: 5px;
+  height: 500px;
+  width: 90%;
+  background-color: #f0f8ff;
+  overflow: auto;
+}
+.chat-div-B{
+position: relative;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  width: fit-content;
+  padding: 5px;
+  min-width: 150px;
+}
+.chat-div-B p{
+  text-align: justify;
+  font-size: 15px ;
+}
+.chat-sendName-span{
+    font-size: 10px;
+   position: absolute;
+  z-index: 10000;
+  right: 0;
+  top:  -8px;
+  cursor: pointer;
+  opacity: 0.7;
+}
+.chat-sendDate-span{
+  font-size: 10px;
+   position: absolute;
+  z-index: 10000;
+  right: 0;
+  bottom:  -10px;
+  bottom: -5px;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.mention-name-p{
+  font-size: 10px !important;
+    background-color: #e0e0e0;
+    border-radius: 3px;
+
+}
+.chat-download-icon{
+  position: absolute;
+  z-index: 10000;
+  left: 0;
+  bottom: -5px;
+  cursor: pointer;
+  opacity: 0.7;
+}
+.chat-uploud-btn{
+position: relative;
+  width: 30px ;
+  height: 30px ;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  padding: 3px;
+
+}
+.chat-uploud-btn span{
+position: absolute;
+
+}
+.chat-uploud-btn input{
+   opacity: 0;
+    height: 100%;
+    width: stretch;
+    position: absolute;
+}
+
+.chat-uploud-btn:hover{
+  background-color: #d3d4d5;
+}
+.chatpanel-tooltip-btn{
+  position: relative;
+}
+.chatpanel-tooltip-span{
+  position: absolute;
+  min-width: 100px;
+  min-height: 100px;
+  background-color: rgb(199, 245, 241);;
+  top:-100px;
+  overflow: auto;
+  border-radius: 5px;
+  right: -30px;
+  opacity: 0.7;
+}

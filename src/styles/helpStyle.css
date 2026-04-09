@@ -1,0 +1,34 @@
+.centerc {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.centerr {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.centerrc{
+    display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.centercc{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.boxSh {
+  box-shadow: 0 0 15px -10px rgb(0, 0, 0, 0.75);
+}
+
+.hidden {
+  display: none !important;
+}
+
+.disabled{
+  opacity: 0.5;
+  pointer-events: none;
+}

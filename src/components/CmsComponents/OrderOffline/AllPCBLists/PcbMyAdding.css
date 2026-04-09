@@ -1,0 +1,89 @@
+.pcbmyadding-row-1 div{
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+
+}
+
+.pcbmyadding-row-1 button{
+font-size: 18px;
+width: 100% ;
+}
+
+.pcbmyadding-row-3{
+    height: 200px;
+}
+
+.pcbmyadding-row-3 div{
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+}
+
+.pcbmyadding-row-3 button{
+
+    width: 100%;
+    height: 100px;
+    font-weight: 600;
+}
+.pcbmyadding-row-4>div{
+    /* width: 300px; */
+}
+.pcbmyadding-card{
+    position: relative;
+    font-size: 25px;
+    font-weight: 600;
+    /* border: 1px solid ; */
+    border-radius: 5px;
+    height: 100px;
+}
+.pcbmyadding-card span{
+position: absolute;
+bottom: 10px;
+left: 5px;
+cursor: pointer;
+}
+.pcbmyadding-card-div{
+    position: relative
+}
+.pcbmyadding-card-chek{
+    position: absolute;
+    right: 0px;
+    top: 30px;
+    transform: rotate(45deg);
+    background-color: greenyellow;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 15px;
+
+}
+.pcbmyadding-row5-firstOk{
+    position: relative !important;
+    font-weight: 600 !important;
+    font-size: 18px !important;
+}
+.pcbmyadding-card-chekB{
+        position: absolute;
+    right: -25px;
+    top: 0;
+    transform: rotate(45deg);
+    background-color: rgb(243, 205, 38);
+    border-radius: 5px;
+    padding: 1px;
+    font-size: 15px;
+    color: brown;
+}
+
+.pcbmyadding-table td{
+    position: relative;
+    max-width: 30px !important;
+}
+
+
+.pcbmyadding-table label{
+    position: absolute;
+    right: 10px;
+    top: -10px;
+    font-size: 12px;
+    font-weight: 600;
+}

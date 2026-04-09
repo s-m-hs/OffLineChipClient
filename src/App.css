@@ -1,0 +1,31 @@
+@import './styles/CmsStyle.css';
+@import'./styles/InputField.css';
+@import'./styles/helpStyle.css';
+
+
+
+ *{
+    padding: 0 ;
+    margin: 0 ;
+    box-sizing: border-box ;
+    
+ }
+
+ iframe
+ {
+     display: none;}
+
+
+
+.App {
+    min-height: 100vh;
+    box-sizing: border-box;
+    text-decoration: none;
+
+  
+}
+.a{
+    text-decoration: none;
+    color:inherit;
+    list-style: none;
+}

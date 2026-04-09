@@ -1,0 +1,9 @@
+.access-div {
+  justify-content: space-between !important;
+  border-bottom: 1px dotted;
+  padding: 1px;
+  margin-bottom: 1px;
+}
+.access-div label {
+  font-size: 12px;
+}

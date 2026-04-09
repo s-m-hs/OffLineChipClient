@@ -1,0 +1,10 @@
+.pcbForm-middle-div{
+      max-height: 800px;
+  overflow: auto;
+  text-align: center;
+}
+.pcb-save-button{
+  width: 30%;
+  height: 60px;
+  font-size: 25px ;
+}

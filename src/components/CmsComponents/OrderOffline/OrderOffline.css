@@ -1,0 +1,280 @@
+.ordeerOff-container{
+}
+
+
+
+
+.order-btn-selectAll:hover {
+  opacity: 0.5;
+  color: brown !important;
+}
+.order-btn-selectAll:active {
+  opacity: 1;
+}
+.order-tooltib-but{
+  width: 100%;
+  height: 100%;
+  background-color: inherit;
+  border: none;
+  outline: none;
+
+}
+.orderOffline-Colors-div button{
+  width: 100px;
+  height: 100px;
+  margin: 10px;
+}
+
+.orderOffline-Colors-div{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+.order-tooltib-main-div{
+  position: relative;
+}
+.order-tooltib-detail-div{
+  position: fixed !important;
+  
+  width: 100px !important;
+  height: 100px !important;
+  background-color: aquamarine;
+  border-radius: 15px !important;
+  top: -20px;
+  display: none;
+  z-index: 1000000;
+  opacity: 0.8;
+}
+.tooltip-p{
+  display: flex;
+  flex-direction: row;
+  justify-content:space-between;
+}
+.tooltip-p h6{
+}
+
+
+.orderoff-footer-div {
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+}
+.orderoff-footer-div  button{
+  width: 300px;
+  height: 50px
+}
+.orderOff-status-btn{
+  pointer-events: none;
+  width: 400px !important;
+  font-size: 18px;
+  font-weight: 600;
+}
+.OrderOfflineB-exel-div {
+  /* width: 20%; */
+position: relative;
+}
+
+.OrderOfflineB-exel-div div{
+    padding: 10px;
+    border: 1px dotted;
+    width: 234px;
+    height: 50px;
+    border-radius: 8px;
+    text-align: center;
+}
+.OrderOfflineB-exel-div button{
+  border: none ;
+  background-color: rgb(241, 217, 80);
+  border-radius: 4px;
+
+}
+.OrderOfflineB-exel-div span{
+  font-size: 18px;
+  font-weight: 600;
+  color: chocolate;
+}
+.OrderOfflineB-exel-div input{
+  cursor: pointer;
+  position: absolute;
+width: 100%;
+height: 100%;
+right: 0;
+opacity: 0;
+cursor: pointer;
+
+}
+
+.orderOffLine-message-btn{
+  /* position: absolute;
+  top: 0px;
+  left: 10px;
+  height: 30px; */
+  width: 30px;
+padding: none !important;
+--bs-btn-padding-x: 0 !important;
+}
+/* 
+.svg-offlin{
+  position: absolute;
+  left: 20px;
+  right: -15px;
+} */
+.orderOffLine-wrapper {
+  position: relative;
+    display: flex;
+    width: 100%;
+    transition: all 0.4s ease;
+}
+
+/* div اصلی */
+.orderOffLine-container-div {
+    flex: 1;
+    transition: all 0.4s ease;
+}
+
+/* وقتی پیام باز میشه عرض کمتر میشه */
+.orderOffLine-container-div.shrink {
+    flex: 0 0 75%;
+}
+
+/* div پیام */
+.orderOffLine-message-div {
+    flex: 0 0 0%;
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.4s ease;
+
+    display: flex;
+    flex-direction: column;   /* مهم */
+    height: 100%; 
+    width: 50% !important;
+}
+
+/* وقتی نمایش داده میشه */
+.orderOffLine-message-div.show {
+    flex: 0 0 25%;
+    opacity: 1;
+    padding: 10px;
+    width: 100px;
+
+
+}
+.orderOffLine-message-div-A-chat{
+  position: relative;
+  width: 100%;
+}
+.orderOffLine-message-div-chat{
+  padding: 5px;
+  padding-top: 10px;
+  margin: 0 auto;
+  border: 1px solid ;
+  border-bottom: none;
+  border-radius: 5px;
+  height: 500px;
+  width: 90%;
+  background-color: #f0f8ff;
+  overflow: auto;
+}
+.chat-mention-div{
+  position: absolute;
+  background-color: rgb(199, 245, 241);
+  min-width: 100px;
+  border-radius: 5px;
+  right: 20px;
+  bottom: 0
+
+}
+
+.chat-div-B{
+position: relative;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  width: fit-content;
+  padding: 5px;
+  min-width: 150px;
+}
+.chat-div-B p{
+  text-align: justify;
+  font-size: 15px ;
+}
+
+.mention-name-p{
+  font-size: 10px !important;
+    background-color: #e0e0e0;
+    border-radius: 3px;
+
+}
+.orderOffLine-message-div-input {
+  height: 150px;
+  width: 90%;
+    margin: 0 auto;
+border-radius: 5px;
+outline: none;
+
+}
+.orderOffLine-message-div-btn{
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.orderOffLine-message-swich-btn button{
+  width: 60px;
+  font-size: 12px;
+
+}
+.chat-uploud-btn{
+position: relative;
+  width: 30px ;
+  height: 30px ;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  padding: 3px;
+
+}
+.chat-uploud-btn span{
+position: absolute;
+
+}
+.chat-uploud-btn input{
+   opacity: 0;
+    height: 100%;
+    width: stretch;
+    position: absolute;
+}
+
+.chat-uploud-btn:hover{
+  background-color: #d3d4d5;
+}
+
+.chat-download-icon{
+  position: absolute;
+  z-index: 10000;
+  left: 0;
+  bottom: -5px;
+  cursor: pointer;
+  opacity: 0.7;
+}
+.chat-sendDate-span{
+  font-size: 10px;
+   position: absolute;
+  z-index: 10000;
+  right: 0;
+  bottom:  -10px;
+  bottom: -5px;
+  cursor: pointer;
+  opacity: 0.7;
+}
+.chat-sendName-span{
+    font-size: 10px;
+   position: absolute;
+  z-index: 10000;
+  right: 0;
+  top:  -8px;
+  cursor: pointer;
+  opacity: 0.7;
+}
+

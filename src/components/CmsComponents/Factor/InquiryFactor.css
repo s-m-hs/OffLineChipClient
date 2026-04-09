@@ -1,0 +1,10 @@
+.InquiryFactor-div{
+    margin: 0 auto;
+}
+
+.InquiryFactor-div textarea{
+    width: 80%;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    outline: none;
+}
