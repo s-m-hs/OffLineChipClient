@@ -59,7 +59,7 @@ export default function Notifications() {
 
             )
         },
-        { field: 'title', headerName: "عنوان", width: 400, cellStyle: { color: "#273ae0", fontWeight: '600' } },
+        { field: 'title', headerName: "عنوان", width: 400, cellStyle: { color: "#454e4c", fontWeight: '600' } },
 
         {
             field: 'orderType', headerName: "نوع سفارش", width: 200,
