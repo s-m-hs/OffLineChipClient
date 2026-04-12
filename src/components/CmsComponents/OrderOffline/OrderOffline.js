@@ -517,7 +517,7 @@ export default function OrderOffline(props) {
                         setOrderDetails(params.data)
                         setOrderStatusEnum(params.data.orderStatus)
                         setStartOrderDate(params.data.startOrderDate)
-                        getMessageA(params.data.id)
+                        // getMessageA(params.data.id)
                         getMentionListS(params.data.id)
                     }}
                 >
@@ -1013,23 +1013,6 @@ export default function OrderOffline(props) {
         ApiGetX2(`/api/CyOrderMessage/GetMessagesByOrderID?OrderID=${id}&type=${type}`, setAllMessageA)
     }
 
-    const sendMessage = () => {
-        let obj = {
-            orderType: 1,
-            orderID: orderId,
-            message: getValues("message"),
-            messageType: Number(messageType),
-            mentions: mentionList?.length != 0 ? mentionList.map(m => m.id) : [],
-            fileID: guIdA ? guIdA : null
-        }
-        const func = () => {
-            setValue("message", '')
-            setGuIdA('')
-            setMentionList([])
-            getMessageA(orderId)
-        }
-        ApiPostX0(`/api/CyOrderMessage/SendMessage`, obj, func)
-    }
     const getInviteListS = () => {
         ApiGetX2(`/api/CyOrderMessage/invite`, setGetInviteList)
     }

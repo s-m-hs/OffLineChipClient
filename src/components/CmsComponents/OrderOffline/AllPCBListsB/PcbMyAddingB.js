@@ -92,7 +92,7 @@ export default function PcbMyAddingB(props) {
                             setOrderId(params.data.id)
                             getOrderDetails(params.data.id)
                             setOrderStatusEnum(params.data.status)
-                            getMessageA(params.data.id, novin)
+                            // getMessageA(params.data.id, novin)
                         }}
                     >
                         <Eye />

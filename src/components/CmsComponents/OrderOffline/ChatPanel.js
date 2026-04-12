@@ -79,10 +79,10 @@ export default function ChatPanel(props) {
             props.setMentionList([])
             props.getMessageA(props.orderId, messageType)
         }
-        ApiPostX0(`/api/CyOrderMessage/SendMessage`, obj, func)
+        ApiPostX0(`/api/CyOrderMessage/SendMessage?isPcb=${props.isPcb}`, obj, func)
     }
-    const addInvite = (userId, orderId) => {
-        ApiGetX4(`/api/CyOrderMessage/addInvite?userId=${userId}&orderId=${orderId}&isPcb=${props.isPcb}`, function (msg) {
+    const addInvite = (inviteUserId, orderId) => {
+        ApiGetX4(`/api/CyOrderMessage/addInvite?inviteUserId=${inviteUserId}&orderId=${orderId}&isPcb=${props.isPcb}`, function (msg) {
             alertA(msg)
         }, function (msg) {
             AlertError(msg)
@@ -101,7 +101,10 @@ export default function ChatPanel(props) {
 
     }, [chatMember])
 
-    console.log(props.getInviteList)
+    useEffect(() => {
+        if (props.isShowMessage) { props.getMessageA(props.orderId, messageType) }
+
+    }, [props.isShowMessage])
     return (
         <>
             <button className='btn btn-light Chatt-message-btn' onClick={() => props.setIsShowMessage(!props.isShowMessage)}>

@@ -30,6 +30,7 @@ export default function CmsIndex() {
   const [isolaLocal, setIsplaLocal] = useState("");
   const [userDetail, setUserDetail] = useState({})
   const [orderDetails, setOrderDetails] = useState([])
+  const [notifCount, setNotifCount] = useState(0)
   const navigatt = useNavigate();
   let { setIsLogin, isLogin } = useContext(HomeContext);
 
@@ -89,7 +90,8 @@ export default function CmsIndex() {
           setIsolaSave,
           isolaLocal,
           setIsplaLocal,
-          userDetail, orderDetails, setOrderDetails
+          userDetail, orderDetails, setOrderDetails,
+          notifCount, setNotifCount
         }}
       >
         <div className="cms-container">

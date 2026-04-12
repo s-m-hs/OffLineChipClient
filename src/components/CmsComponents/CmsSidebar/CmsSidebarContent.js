@@ -102,7 +102,7 @@ export default function CmsSidebarContent() {
 
       )}
 
-      <NavLink className="cmssidebar-div" to={"C"}>
+      <NavLink className="cmssidebar-div" to={"KarPooshe"}>
         <FaFolderOpen size={20} style={{ marginLeft: "5px" }} />        <span> کار پوشه </span>
       </NavLink>
 

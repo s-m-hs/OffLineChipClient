@@ -22,13 +22,13 @@ import CmsTicket from './pages/CmsPages/CmsTicket/CmsTicket'
 import CmsSystemAsembly from './pages/CmsPages/CmsSystemAsembly/CmsSystemAsembly'
 import TestPage from './pages/CmsPages/Test/TestPage'
 import CmsFactor from './pages/CmsPages/CmsFactor/CmsFactor'
-import C from './components/CmsComponents/OrderOffline/C'
 import PCBLIst from './components/CmsComponents/OrderOffline/PCBLIst'
 import PCBLIstB from './components/CmsComponents/OrderOffline/PCBLIstB'
 import OrderLists from './components/CmsComponents/OrderOffline/OrderLists'
 import OrderListsB from './components/CmsComponents/OrderOffline/OrderListsB'
 import InquiryList from './components/CmsComponents/OrderOffline/InquiryList'
 import InQueryListB from './components/CmsComponents/OrderOffline/InQueryListB'
+import OrderKarPooshe from './components/CmsComponents/OrderKarPoosheh/OrderKarPooshe'
 let routes = [
 
     { path: '/', element: <IndexH /> },
@@ -63,7 +63,7 @@ let routes = [
             { path: "OrderLists", element: <OrderLists /> },
             { path: "PCBLIst", element: <PCBLIst /> },
             { path: "OrderListsB", element: <OrderListsB /> },
-            { path: "C", element: <C /> },
+            { path: "KarPooshe", element: <OrderKarPooshe /> },
             { path: "PCBLIstB", element: <PCBLIstB /> },
             { path: "InquiryList", element: <InquiryList /> },
             { path: "InQueryListB", element: <InQueryListB /> },

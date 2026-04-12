@@ -16,11 +16,15 @@ import ApiGetX2 from "../../../utils/ApiServicesX/ApiGetX2";
 import Swal from "sweetalert2";
 import { UserType } from "../../../utils/OrderStatusList";
 import { ImExit } from "react-icons/im";
+import { Alarm, MessengerLogo, Notification, Warning } from "@phosphor-icons/react";
+import { Message, NotificationAdd } from "@mui/icons-material";
+import { RiMessengerLine } from "react-icons/ri";
 export default function CmsHeader() {
   const [flagThem, setFlagThem] = useState(false);
+
   const cmsContext = useContext(CmsContext);
   const homeContext = useContext(HomeContext);
-  let { userDetail } = useContext(CmsContext)
+  let { userDetail, notifCount, setNotifCount } = useContext(CmsContext)
   const navigatt = useNavigate();
 
   // const headerAuth = `Bearer ${cmsContext.token.token}`;
@@ -43,6 +47,9 @@ export default function CmsHeader() {
     ApiGetX2("/api/CyTicket/getAllTickets?status=1", funcA);
   };
 
+  const getUnSeenNotif = () => {
+    ApiGetX2(`/api/CyNotification/unSeenNotif`, setNotifCount)
+  }
   useEffect(() => {
     if (flagThem) {
       document.documentElement.style.setProperty("--white", "#464646");
@@ -67,6 +74,10 @@ export default function CmsHeader() {
     }
   }, [flagThem]);
 
+  useEffect(() => {
+    getUnSeenNotif()
+    console.log(notifCount)
+  }, [notifCount])
   const LogOut = () => {
     async function myApp() {
       const res = await fetch(`${apiUrl}/api/CyLogin/logout`, {
@@ -142,6 +153,11 @@ export default function CmsHeader() {
                 filter.userType == userDetail.role
               ))[0]?.name}
             </span>
+          </div>
+
+          <div className="cmsheader-div">
+            <span className="cmsheader-notif-span">  {notifCount != 0 ? notifCount : ''}<NotificationsIcon /></span>
+
           </div>
 
           <div className="cmsheader-div">

@@ -99,7 +99,12 @@ animation: move 300ms 1 alternate ease-in-out;
 }
 
 
-
+.cmsheader-notif-span{
+    position: relative;
+    color: red;
+    font-weight: 600;
+    font-size: 13px;
+}
 
   @keyframes move {
     0% {
