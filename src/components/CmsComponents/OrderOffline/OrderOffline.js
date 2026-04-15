@@ -37,7 +37,7 @@ import ChangeUplodeC from '../../../utils/ChangeUplodeC';
 import ApiPostX0 from '../../../utils/ApiServicesX/ApiPostX0';
 import DownloadFile from '../../../utils/DownloadFile';
 import { List, Tooltip } from '@mui/material';
-import { UserType } from '../../../utils/OrderStatusList';
+import { OrderStatusList, UserType } from '../../../utils/OrderStatusList';
 import ChatPanel from './ChatPanel';
 
 
@@ -49,7 +49,6 @@ export default function OrderOffline(props) {
     const [show, setShow] = useState(false);
     const [showB, setShowB] = useState(false);
     const [showC, setShowC] = useState(false);
-    const [showD, setShowD] = useState(false);
     const [approvalsList, setApprovalsList] = useState([]);
     const [approvalsListB, setApprovalsListB] = useState([]);
     const [orderId, setOrderId] = useState('')
@@ -71,11 +70,9 @@ export default function OrderOffline(props) {
     const [toNextState, setToNextState] = useState(false)
     const [isfirstState, setIsfirstState] = useState(true)
     const [isShowMessage, setIsShowMessage] = useState(false)
-    const [guIdA, setGuIdA] = useState("");
     const [allMessageA, setAllMessageA] = useState([])
     const [getMentionList, setGetMentionList] = useState([])
     const [mentionList, setMentionList] = useState([])
-    const [messageType, setMessageType] = useState(1)
     const [ChatguId, setChatguId] = useState("");
     const [getInviteList, setGetInviteList] = useState([])
     const [inviteList, setInviteList] = useState([])
@@ -502,7 +499,7 @@ export default function OrderOffline(props) {
             cellStyle: { color: 'red', 'font-weight': '600' }
             ,
             cellRenderer: (params) => (
-                <span>{orderStatusList.filter(filter => (filter.statusId === params.data.orderStatus))[0]?.status}</span>)
+                <span>{OrderStatusList.filter(filter => (filter.statusId === params.data.orderStatus))[0]?.status}</span>)
         },
         {
             headerName: 'مشاهده', width: 200,
@@ -511,6 +508,7 @@ export default function OrderOffline(props) {
                     className='btn btn-light '
                     style={{ width: "60px", height: "30px", fontSize: "20px", padding: "1px", margin: '1px' }}
                     onClick={() => {
+                        // console.log(params)
                         setLoadingFlag(true)
                         getOrderDetail(params.data.id)
                         setOrderId(params.data.id)
@@ -525,8 +523,8 @@ export default function OrderOffline(props) {
                 </button>
             )
         },
-        { field: 'id', headerName: "شماره سفارش", width: 200 },
-        { field: 'orderCode', headerName: "کد پروژه", width: 200 },
+        // { field: 'id', headerName: "شماره سفارش", width: 200 },
+        { field: 'orderCode', headerName: "کد سفارش", width: 200 },
         { field: 'cyVahed', headerName: "واحد", width: 200 },
         { field: 'cyGorooh', headerName: "گروه", width: 200 },
         {
@@ -538,6 +536,7 @@ export default function OrderOffline(props) {
         { field: 'totalAmount', headerName: "مبلغ سفارش" },
 
     ], []);
+
     const colDefsB = useMemo(() => [
         {
             headerName: "ردیف",
@@ -864,6 +863,18 @@ export default function OrderOffline(props) {
 
 
     };
+    /////
+    const cancelFunc = () => {
+        ApiGetX2(`/api/CyOrdersB/cancelOrder?OrderId=${orderId}&isPcb=false`, function (result) {
+            getAllOrder()
+            setShow(false)
+        })
+    }
+    const cancelOrder = (id) => {
+        AlertQ("آیا از لغو سفارش اطمینان دارید ؟", "", cancelFunc)
+    }
+    //////
+
     useEffect(() => {
         if (orderStatusEnum == 20) {
             setIsfirstState(false)
@@ -997,17 +1008,17 @@ export default function OrderOffline(props) {
     ]);
 
 
-    const orderStatusList = [
-        { id: 1, status: "ثبت سفارش", statusId: 10 },
-        { id: 2, status: "در حال استعلام گیری", statusId: 15 },
-        { id: 3, status: "در انتظار تایید مشتری", statusId: 20 },
-        { id: 4, status: "در صف خرید", statusId: 25 },
-        { id: 5, status: "در حال تامین", statusId: 30 },
-        { id: 6, status: "خاتمه یافته", statusId: 40 },
-        { id: 6, status: "", statusId: 45 },
-        { id: 7, status: "تحویل داده شده", statusId: 50 },
-        { id: 8, status: "لغو شده", statusId: -1 },
-    ]
+    // const orderStatusList = [
+    //     { id: 1, status: "ثبت سفارش", statusId: 10 },
+    //     { id: 2, status: "در حال استعلام گیری", statusId: 15 },
+    //     { id: 3, status: "در انتظار تایید مشتری", statusId: 20 },
+    //     { id: 4, status: "در صف خرید", statusId: 25 },
+    //     { id: 5, status: "در حال تامین", statusId: 30 },
+    //     { id: 6, status: "خاتمه یافته", statusId: 40 },
+    //     { id: 6, status: "", statusId: 45 },
+    //     { id: 7, status: "تحویل داده شده", statusId: 50 },
+    //     { id: 8, status: "لغو شده", statusId: -1 },
+    // ]
 
     const getMessageA = (id, type) => {
         ApiGetX2(`/api/CyOrderMessage/GetMessagesByOrderID?OrderID=${id}&type=${type}`, setAllMessageA)
@@ -1051,10 +1062,10 @@ export default function OrderOffline(props) {
 
     useEffect(() => {
         if (orderItemS?.length > 0 && (orderStatusEnum == 10 || orderStatusEnum == 20)) {
-            setOrderStatus(orderStatusList?.filter(filter => (
+            setOrderStatus(OrderStatusList?.filter(filter => (
                 filter.statusId == orderDetails.orderStatus
             ))[0].status)
-            setOrderNextStatus(orderStatusList?.filter(filter => (
+            setOrderNextStatus(OrderStatusList?.filter(filter => (
                 filter?.statusId == (orderDetails?.orderStatus + 5)
             ))[0].status)
         }
@@ -1092,7 +1103,6 @@ export default function OrderOffline(props) {
         }
     }, [showC, falsApprovals])
 
-    console.log(userDetail)
 
     return (
 
@@ -1115,11 +1125,13 @@ export default function OrderOffline(props) {
                 <Modal.Header
                     dir='ltr'
                     closeButton
-                ><button className='btn btn-success disabled'>سمت : {userRole}</button>
+                ><button className='btn btn-success disabled'>سمت : {userRole} ___ <span>تأیید شده: {approvalsList?.filter(a => a.isApproved).length}/{approvalsList?.length}</span>___
+
+                        <span> کد سفارش: {orderDetails.orderCode}</span></button>
                 </Modal.Header>
                 <Modal.Body>
                     <>
-                        <div className="orderOffLine-wrapper " >
+                        <div className={orderStatusEnum == -1 ? "orderOffLine-wrapper disabled " : "orderOffLine-wrapper "}   >
 
                             <ChatPanel
                                 setIsShowMessage={setIsShowMessage}
@@ -1291,10 +1303,6 @@ export default function OrderOffline(props) {
 
                                     <button className='orderOff-status-btn btn btn-info '> زمان آغاز سفارش :<DateFormat dateString={startOrderDate} /></button>
 
-                                    <span>تأیید شده: {approvalsList?.filter(a => a.isApproved).length}/{approvalsList?.length}</span>
-
-                                    {/* <span>{orderDetails.totalAmount}</span> */}
-                                    <span>{orderDetails.orderCode}</span>
 
                                     {((userDetail.role == "DepartmentManager" || userDetail.role == "GeneralManager") && (orderStatusEnum == 10 || orderStatusEnum == 20)) &&
                                         <button type='button'
@@ -1305,7 +1313,12 @@ export default function OrderOffline(props) {
 
                                         </button>
                                     }
-
+                                    {((userDetail.role == "DepartmentManager" || userDetail.role == "GeneralManager") && (orderStatusEnum == 10 || orderStatusEnum == 20)) &&
+                                        <button type='button'
+                                            onClick={cancelOrder} className="btn btn-danger orderOff-cancel-btn">
+                                            <span>لغو سفارش</span>
+                                        </button>
+                                    }
                                 </div>
 
 

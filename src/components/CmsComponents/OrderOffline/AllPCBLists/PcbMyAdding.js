@@ -32,7 +32,6 @@ export default function PcbMyAdding(props) {
     const [orderStatusEnum, setOrderStatusEnum] = useState('')
     const [orderStatus, setOrderStatus] = useState('')
     const [orderNextStatus, setOrderNextStatus] = useState('')
-    const [toNextState, setToNextState] = useState(false)
     const [approvalDetails, setApprovalDetails] = useState([])
     const [isShowMessage, setIsShowMessage] = useState(false)
     const [allMessageA, setAllMessageA] = useState([])
@@ -43,6 +42,7 @@ export default function PcbMyAdding(props) {
     const [inviteList, setInviteList] = useState([])
     const faramoj = 1
     const pcb = 2
+    const canceled = -1
 
 
     const colDefs = ([
@@ -70,7 +70,7 @@ export default function PcbMyAdding(props) {
                         className='btn btn-light '
                         style={{ width: "60px", height: "30px", fontSize: "20px", padding: "1px", margin: '1px' }}
                         onClick={() => {
-                            console.log(params)
+                            // console.log(params)
                             setOrderId(params.data.id)
                             getOrderDetails(params.data.id)
                             setOrderStatusEnum(params.data.status)
@@ -95,14 +95,7 @@ export default function PcbMyAdding(props) {
             )
         },
         {
-            field: 'pcbNumber', headerName: "شماره PCB", width: 300,      // ✅ fixed کوچکتر
-            minWidth: 150,
-            maxWidth: 150,
-
-
-        },
-        {
-            field: 'orderCode', headerName: " کدپروژه", width: 100,      // ✅ fixed کوچکتر
+            field: 'orderCode', headerName: " کد سفارش", width: 100,      // ✅ fixed کوچکتر
             minWidth: 150,
             maxWidth: 150,
         },
@@ -116,6 +109,13 @@ export default function PcbMyAdding(props) {
             minWidth: 200,
             maxWidth: 200,
         },
+        // {
+        //     field: 'pcbNumber', headerName: "شماره PCB", width: 300,      // ✅ fixed کوچکتر
+        //     minWidth: 150,
+        //     maxWidth: 150,
+
+
+        // },
         {
             field: 'orderDate', headerName: " تاریخ ثبت", width: 100,      // ✅ fixed کوچکتر
             minWidth: 200,
@@ -210,17 +210,6 @@ export default function PcbMyAdding(props) {
 
 
     ])
-    const List = [
-        { id: 1, status: "ثبت سفارش", statusId: 10 },
-        { id: 2, status: "در حال استعلام گیری", statusId: 15 },
-        { id: 3, status: "در انتظار تایید مشتری", statusId: 20 },
-        { id: 4, status: "در صف خرید", statusId: 25 },
-        { id: 5, status: "در حال تامین", statusId: 30 },
-        { id: 6, status: "خاتمه یافته", statusId: 40 },
-        { id: 6, status: "", statusId: 45 },
-        { id: 7, status: "تحویل داده شده", statusId: 50 },
-        { id: 8, status: "لغو شده", statusId: -1 },
-    ]
 
 
     const getApproval = (id) => {
@@ -251,6 +240,18 @@ export default function PcbMyAdding(props) {
 
     };
 
+    /////
+    const Cnfunc = () => {
+        getAllPcbOrders()
+        setShowB(false)
+    }
+    const cancelFunc = () => {
+        ApiGetX2(`/api/CyOrdersB/cancelOrder?OrderId=${orderId}&isPcb=true`, Cnfunc)
+    }
+    const cancelOrder = (id) => {
+        AlertQ("آیا از لغو سفارش اطمینان دارید ؟", "", cancelFunc)
+    }
+    //////
 
     const reRender = (result) => {
         getOrderDetails(orderId)
@@ -376,7 +377,7 @@ export default function PcbMyAdding(props) {
                 <Modal.Header closeButton></Modal.Header>
                 <Modal.Body >
                     <>
-                        <div className='orderOffLine-wrapper'>
+                        <div className={orderStatusEnum == canceled ? 'orderOffLine-wrapper disabled' : 'orderOffLine-wrapper'} >
 
                             <ChatPanel
                                 setIsShowMessage={setIsShowMessage}
@@ -730,6 +731,13 @@ export default function PcbMyAdding(props) {
                                                         <ArrowBack size={40} style={{ color: '#f80606', margin: '2px' }} />
                                                         <span>{orderNextStatus}</span>
 
+                                                    </button>
+                                                }
+
+                                                {((userDetail.role == "DepartmentManager" || userDetail.role == "GeneralManager") && (orderStatusEnum == 10 || orderStatusEnum == 20)) &&
+                                                    <button type='button'
+                                                        onClick={cancelOrder} className="btn btn-danger orderOff-cancel-btn">
+                                                        <span>لغو سفارش</span>
                                                     </button>
                                                 }
 

@@ -71,22 +71,11 @@ export default function PCBFactor() {
             listB.push(element.fileId)
         });
         let obj = {
-            //   id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-            //   cyUserID: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-            //   orderDate: "2026-02-14T07:51:21.022Z",
-            //   sendDate: "2026-02-14T07:51:21.022Z",
-            //   inquiryDate: "2026-02-14T07:51:21.022Z",
-            //   verifiedDate: "2026-02-14T07:51:21.022Z",
-            //   startDate: "2026-02-14T07:51:21.022Z",
-            //   deliveredDate: "2026-02-14T07:51:21.022Z",
-            //   cancelationDate: "2026-02-14T07:51:21.022Z",
             orderCode: data.PriJCode,
-            //   status: ,
             amount: 0,
             count: data.count,
             totalAmount: 0,
             currency: 1,
-            //   creatorId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
             creatorComment: null,
             commentB: null,
             cyVahedId: data.vahed ? data.vahed : null,
@@ -94,7 +83,6 @@ export default function PCBFactor() {
             guidFileList: listB,
             isMechanizedAssembly: true,
         }
-        console.log(obj)
         ApiPostX(`/api/CyPCB/addPcb`, obj, afterResponse)
     }
 
@@ -205,6 +193,14 @@ export default function PCBFactor() {
             setCurrentGroups(allGroup?.filter((filter => (
                 filter.vahedId == selectedVahed)))
             )
+        } else if (userDetail.role == "DepartmentManager") {
+            if (!loadingFlag) {
+                setTimeout(() => {
+                    let VahedId = userDetail.vahedId
+                    setValue("vahed", VahedId)
+                }, 1500);
+
+            }
         } else if (userDetail.role == "GroupExpert" || userDetail.role == "GroupManager") {
             setCurrentGroups(allGroup)
             if (!loadingFlag) {
@@ -213,7 +209,7 @@ export default function PCBFactor() {
                     let GroupId = userDetail.gruopId
                     setValue("vahed", VahedId)
                     setValue("group", GroupId)
-                }, 1000);
+                }, 1500);
             }
         }
 
@@ -266,7 +262,7 @@ export default function PCBFactor() {
                         <label className="user-col3-selectlabel ">واحد :</label>
                         <select
 
-                            className={(userDetail.role == "DepartmentManager" || userDetail.role == "GeneralManager") ? "user-col3-select" : "user-col3-select disabled"}
+                            className={userDetail.role == "GeneralManager" ? "user-col3-select" : "user-col3-select disabled"}
                             {...register(
                                 !flagUpdate ? "vahed" : "update.vahed"
                             )}

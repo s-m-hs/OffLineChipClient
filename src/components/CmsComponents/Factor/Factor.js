@@ -452,7 +452,7 @@ const Factor = (props) => {
                 <div className='factor-exel-div boxSh centercc'>
                     <button type='button'
                         onClick={() => {
-                            const sampleGuid = "a7e36cd3-0b8c-44bc-b8c3-6cba040df295"
+                            const sampleGuid = "c2a05427-53a8-45a8-9562-e2e0a581bddc"
                             DownloadFile(sampleGuid)
                         }}
                     >نمونه اکسل</button>
