@@ -58,9 +58,11 @@ import {
     Eyes, Eye
 
 } from "@phosphor-icons/react";
-import { Add, CloseOutlined, More, MoreHorizOutlined, MoreHorizRounded, MoreHorizSharp, MoreTime, MoreVert, Save, SaveAlt, SaveAs, SaveOutlined, Search, SearchOffOutlined, SearchSharp } from '@mui/icons-material';
+import { Add, Close, CloseOutlined, CloseRounded, CloseSharp, More, MoreHorizOutlined, MoreHorizRounded, MoreHorizSharp, MoreTime, MoreVert, Save, SaveAlt, SaveAs, SaveOutlined, Search, SearchOffOutlined, SearchSharp } from '@mui/icons-material';
 import ChangeUplode from '../../../utils/ChangeUplode';
 import DownloadFile from '../../../utils/DownloadFile';
+import { Pending } from '../../../utils/Enums';
+import { CloseButton } from 'react-bootstrap';
 const Factor = (props) => {
     const cmsContext = useContext(CmsContext);
     const homeContext = useContext(HomeContext);
@@ -75,7 +77,8 @@ const Factor = (props) => {
     const [guId, setGuId] = useState("");
     const [orderItemExel, setOrderItemExel] = useState([])
     const [searchProductDetail, setSearchProductDetail] = useState([])
-
+    const [orderItemError, setOrderItemError] = useState(false)
+    const [orderItemErrorList, setOrderItemErrorList] = useState([])
     const {
         register,
         handleSubmit,
@@ -139,6 +142,7 @@ const Factor = (props) => {
             return;
         }
 
+
         setOrderItems(prev => [...prev, newItem]);
         setError('');
     }, [orderItems]);
@@ -182,9 +186,7 @@ const Factor = (props) => {
             grandTotal
         });
     }, []);
-    // const handleRegistration = (data) => {
-    //     console.log(data)
-    // }
+
 
     useEffect(() => {
         calculateTotals();
@@ -192,46 +194,60 @@ const Factor = (props) => {
 
     const handleRegistration = (data) => {
         setLoadingFlag(true)
+        setOrderItemError(false)
+        setOrderItemErrorList([])
+        let hasError = false;  // متغیر محلی
+        let errorItems = [];   // متغیر محلی
         orderItems.forEach(item => {
-            item.ID = null
+            if (item.partNumber == null || item.quantity == 0 || item.quantity == null) {
+                hasError = true;
+                errorItems.push(item);
+                setOrderItemErrorList(prev => [...prev, item])
+                setLoadingFlag(false)
+            }
         });
-        const orderStatus = 10
-        let obj = {
-            id: null,
-            status: orderStatus,  ///Inquiring = 15,
-            orderMode: 0,//Normal = 0,
-            statusText: data.StatusText,
-            totalAmount: totals.grandTotal,
-            orderCode: data.PriJCode,
-            cyVahedId: data.vahed ? data.vahed : null,
-            cyGoroohId: data.group ? data.group : null,
-            cyOrderItems: orderItems,
-        }
-        async function myApp() {
-            const res = await fetch(`${apiUrl}/api/CyOrdersB/addOrder`, {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(obj)
-            }).then(res => {
-                if (res.ok) return res.json().then(result => {
-                    setLoadingFlag(false)
-                    setOrderItems([])
-                    reset(setValue(''))
-                    alertA("عملیات با موفقیت ثبت شد")
-                    navigate('/p-admin/OrderLists')///انتقال به صفحه 
 
-                    // props.setFlagResetInput("OrderOffline")
+        setOrderItemError(hasError);
+        if (!hasError) {  // استفاده از متغیر محلی
+            orderItems.forEach(item => item.ID = null);
+            const orderStatus = Pending
+            let obj = {
+                id: null,
+                status: orderStatus,  ///pending = 10,
+                orderMode: 0,//Normal = 0,
+                statusText: data.StatusText,
+                totalAmount: totals.grandTotal,
+                orderCode: data.PriJCode,
+                cyVahedId: data.vahed ? data.vahed : null,
+                cyGoroohId: data.group ? data.group : null,
+                cyOrderItems: orderItems,
+            }
+            async function myApp() {
+                const res = await fetch(`${apiUrl}/api/CyOrdersB/addOrder`, {
+                    method: "POST",
+                    credentials: "include",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(obj)
+                }).then(res => {
+                    if (res.ok) return res.json().then(result => {
+                        setLoadingFlag(false)
+                        setOrderItems([])
+                        reset(setValue(''))
+                        alertA("عملیات با موفقیت ثبت شد")
+                        navigate('/p-admin/OrderLists')///انتقال به صفحه 
+
+                        // props.setFlagResetInput("OrderOffline")
+                    })
+                    else {
+                        setLoadingFlag(false)
+                        AlertError("مشکلی پیش آمده...")
+                    }
                 })
-                else {
-                    setLoadingFlag(false)
-                    AlertError("مشکلی پیش آمده...")
-                }
-            })
+            }
+            myApp()
         }
-        myApp()
 
     }
 
@@ -369,6 +385,24 @@ const Factor = (props) => {
         <form className="Factor-container" dir="rtl"
             onSubmit={handleSubmit(handleRegistration, handleError)}
         >
+            {orderItemErrorList.length != 0 && <div className='factor-listErro'>
+                <span onClick={() => { setOrderItemErrorList([]) }}>
+                    <Close style={{ color: "#000000", cursor: 'pointer', fontSize: '15px' }} />
+                </span>
+                <h5>
+                    پارت نامبر یا تعداد کالا نباید خالی باشد
+
+                </h5>
+                <ul>
+                    {orderItemErrorList.map(item => (
+                        <li>{item.partNumber}</li>
+
+                    ))}
+                </ul>
+
+
+            </div>}
+
             {loadingFlag && <LodingA isShow={true} />
             }
 
@@ -543,7 +577,7 @@ const Factor = (props) => {
                                 <td className='hidden'><input value={item.Duration || ''} onChange={e => updateItemField(item.ID, 'Duration', e.target.value)} /></td>
 
                                 <td className='centerr'>
-                                    <button className="remove-btn" onClick={() => removeItem(item.ID)}>➖</button></td>
+                                    <button type='button' className="remove-btn" onClick={() => removeItem(item.ID)}>➖</button></td>
                             </tr>
                         ))}
 

@@ -27,7 +27,6 @@ import ChatPanel from './ChatPanel';
 
 export default function OrderOfflineB(props) {
     const { userDetail, orderDetails, setOrderDetails } = useContext(CmsContext)
-    // const { orderDetails, setOrderDetails } = useContext(FactorContext)
     const [userOrders, setUserOrders] = useState([])
     const [orderItemS, setOrderItemS] = useState([])
     const [orderItemSDetails, setOrderItemSDetails] = useState([])
@@ -36,16 +35,12 @@ export default function OrderOfflineB(props) {
     const [approvalsList, setApprovalsList] = useState([]);
     const [orderId, setOrderId] = useState('')
     const [creatorName, setCreatorName] = useState('')
-
-    const [cellState, setCellState] = useState('')
-    const [cellStateB, setCellStateB] = useState('')
     const [appravlDetal, setAppravlDetal] = useState([])
     const gridRef = useRef();
     const userRole = userDetail?.role;
     const [loadingFlag, setLoadingFlag] = useState(false)
     const [orderStatus, setOrderStatus] = useState('')
     const [orderNextStatus, setOrderNextStatus] = useState('')
-
     const [orderStatusEnum, setOrderStatusEnum] = useState('')
     const [startOrderDate, setStartOrderDate] = useState('')
 
@@ -54,12 +49,9 @@ export default function OrderOfflineB(props) {
     const [itemQuntity, setItemQuntity] = useState('')
     const [file, setFile] = useState({});
     const [guId, setGuId] = useState("");
-    const [orderItemExel, setOrderItemExel] = useState([])
     const [isShowMessage, setIsShowMessage] = useState(false)
     const [allMessageA, setAllMessageA] = useState([])
-    const [getMentionList, setGetMentionList] = useState([])
     const [mentionList, setMentionList] = useState([])
-    const [messageType, setMessageType] = useState(1)
     const [ChatguId, setChatguId] = useState("");
     const [getInviteList, setGetInviteList] = useState([])
     const [inviteList, setInviteList] = useState([])
@@ -230,6 +222,7 @@ export default function OrderOfflineB(props) {
                         className='btn btn-light '
                         style={{ width: "60px", height: "30px", fontSize: "20px", padding: "1px", margin: '1px' }}
                         onClick={() => {
+                            console.log(params.data.id)
                             downloadExcel(params.data.id)
                         }}
                     >
@@ -252,6 +245,8 @@ export default function OrderOfflineB(props) {
         { field: 'totalAmount', headerName: "مبلغ سفارش" },
 
     ], []);
+
+
 
     const colDefsB = useMemo(() => [
         {
@@ -297,7 +292,7 @@ export default function OrderOfflineB(props) {
                         (<button className='btn btn-secondary'
                             onClick={() => {
                                 showOrderDetail(params.data)
-                                console.log(params)
+                                // console.log(params)
                             }
 
                             }>
@@ -318,7 +313,7 @@ export default function OrderOfflineB(props) {
         {
             field: 'quantity', headerName: " تعداد", width: 100,      // ✅ fixed کوچکتر
             minWidth: 100,
-            maxWidth: 100,
+            maxWidth: 130,
         },
         {
             field: 'manufacturer', headerName: "شرکت سازنده",
@@ -542,7 +537,7 @@ export default function OrderOfflineB(props) {
 
         const a = document.createElement("a");
         a.href = url;
-        a.download = `Order_${orderId}.xlsx`;
+        a.download = `Order_${id}.xlsx`;
         a.click();
         window.URL.revokeObjectURL(url);
     };
@@ -607,11 +602,12 @@ export default function OrderOfflineB(props) {
         setGuId(id);
     };
     const handleOrderItemExel = (result) => {
-        setOrderItemExel(result)
-        setShow(false)
+        // setOrderItemExel(true)
+        // setShow(false)
         setLoadingFlag(false)
         setFile('')
         setGuId('')
+        getOrderDetail(orderId)////جهت رند مجدد جدول
     }
     const setError = (result) => {
         setLoadingFlag(false)
@@ -626,6 +622,7 @@ export default function OrderOfflineB(props) {
             // changeUplode();
         }
     }, [file]);
+
     useEffect(() => {
         if (guId) {
             ApiGetX3(`/api/CyProductsB/updateOrderByExell?input=${guId}&&orderId=${orderId}`, handleOrderItemExel, setError)

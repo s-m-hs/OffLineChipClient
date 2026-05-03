@@ -283,3 +283,20 @@ position: absolute;
   font-size: 12px !important;
   font-weight: 700 !important;
 }
+
+
+/* در فایل CSS خود */
+.ag-row-selected {
+    background-color: #ffeb3b !important;
+    transition: background-color 0.5s ease;
+}
+
+/* یا برای افکت چشمک زن */
+@keyframes highlightFlash {
+    0% { background-color: #ffeb3b; }
+    100% { background-color: transparent; }
+}
+
+.highlight-row {
+    animation: highlightFlash 2s ease-in-out;
+}

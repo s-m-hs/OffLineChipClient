@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import BaseGrid from '../../Grid/BaseGrid'
 import DateFormat from '../../../utils/DateFormat';
 import ApiGetX2 from '../../../utils/ApiServicesX/ApiGetX2';
+import { useNavigate } from 'react-router-dom';
 
 export default function OpenOrderS(props) {
     const [openOrders, setOpenOrders] = useState([])
@@ -10,6 +11,10 @@ export default function OpenOrderS(props) {
     const bom = 1
     const pcb = 2
     const inquery = 3
+
+    const navigate = useNavigate();
+
+
     const [colDefs] = useState([
         {
             headerName: "ردیف",
@@ -21,9 +26,22 @@ export default function OpenOrderS(props) {
         },
 
         {
+            field: '', headerName: "کد سفارش", width: 150,
+            cellRenderer: (params) => (
+                <>
+                    <button onClick={() => {
+                        navigate(`/p-admin/OrderLists?id=${params.data.id}`) ///انتقال به صفحه 
+                    }} >*</button>
+                </>
+            )
+
+        },
+
+        {
             field: 'orderCode', headerName: "کد سفارش", width: 150,
 
         },
+
         {
             field: 'orderStatus', headerName: "وضعیت سفارش", width: 200, cellStyle: { color: "#454e4c", fontWeight: '700' }, cellRenderer: (params) => (
                 <>
