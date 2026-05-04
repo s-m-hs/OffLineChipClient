@@ -3,7 +3,7 @@ import Tabs from 'react-bootstrap/Tabs';
 import { useState } from 'react';
 import OrderOfflineB from './OrderOfflineB';
 export default function OrderListsB() {
-    const [flagResetInput, setFlagResetInput] = useState("B")
+    const [flagResetInput, setFlagResetInput] = useState("A")
 
     const ffc = (tabName) => {
         setFlagResetInput(tabName)

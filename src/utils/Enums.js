@@ -8,5 +8,8 @@ export const Finished = 35
 export const Delivered = 40
 export const Canceled = -1
 
+export const Bom = 1
+export const PCB = 2
+
 
 

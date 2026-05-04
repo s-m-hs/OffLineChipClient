@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import './PcbMyAddingB.css'
 import BaseGrid from '../../../Grid/BaseGrid'
 import ApiGetX from '../../../../utils/ApiServicesX/ApiGetX'
@@ -21,8 +21,12 @@ import AlertQ from '../../../../utils/AlertFunc/AlertQ';
 import { useForm } from 'react-hook-form';
 import ApiPutX0 from '../../../../utils/ApiServicesX/ApiPutX0';
 import ChatPanel from '../ChatPanel';
+import { useLocation } from 'react-router-dom';
+import LodingA from '../../../../utils/LodingA';
 export default function PcbMyAddingB(props) {
     let { userDetail, setUserDetail } = useContext(CmsContext)
+    const gridRefB = useRef();
+    const location = useLocation();
     const [allOrder, setAllOrder] = useState([])
     const [orderItems, setOrderItewms] = useState([])
     const [orderId, setOrderId] = useState('')
@@ -60,7 +64,50 @@ export default function PcbMyAddingB(props) {
 
     };
 
+    //////////////start بخش مربوط به گرفتن کویری از آدرس و جستجو در جدول 
+    // دریافت GUID از URL
+    const getGuidFromUrl = () => {
+        const searchParams = new URLSearchParams(location.search);
+        return searchParams.get('id');
+    };
 
+    const guid = getGuidFromUrl();
+    const highlightAndScrollToRow = (guid) => {
+        if (!gridRefB.current?.api) return;
+
+        const api = gridRefB.current.api;
+        let targetNode = null;
+
+        api.forEachNode((node) => {
+            if (node.data && String(node.data.id) === guid) {
+                targetNode = node;
+            }
+        });
+
+        if (targetNode) {
+            // اسکرول به ردیف
+            api.ensureIndexVisible(targetNode.rowIndex, 'middle');
+
+            // انتخاب ردیف (روش صحیح)
+            targetNode.setSelected(true, false);
+
+            // اگر می‌خواهید فقط یک ردیف انتخاب شود
+            // targetNode.setSelected(true, true);
+        }
+    };
+    // هایلایت کردن ردیف مربوط به GUID
+    useEffect(() => {
+        console.log('first')
+        if (guid && gridRefB.current) {
+            setLoadingFlag(true)
+            setTimeout(() => {
+                setLoadingFlag(false)
+                highlightAndScrollToRow(guid)
+
+            }, 3000);
+        }
+    }, [guid]);
+    //////////////////end/////
 
     const colDefs = ([
 
@@ -339,7 +386,7 @@ export default function PcbMyAddingB(props) {
         if (loadingFlag) {
             setTimeout(() => {
                 setLoadingFlag(false)
-            }, 1500);
+            }, 3500);
         }
     }, [loadingFlag])
     useEffect(() => {
@@ -362,7 +409,9 @@ export default function PcbMyAddingB(props) {
     return (
         <>
             <div style={{ height: "700px" }}>
-                <BaseGrid rowData={allOrder} colDefs={colDefs} rtl={true} />
+                {loadingFlag && <LodingA isShow={true} />
+                }
+                <BaseGrid ref={gridRefB} rowData={allOrder} colDefs={colDefs} rtl={true} />
             </div >
 
 
@@ -555,7 +604,7 @@ export default function PcbMyAddingB(props) {
 
                                     {/* row 2 */}
 
-                                    <table className='table table table-bordered  pcbmyadding-table'>
+                                    <table className='table table table-bordered   pcbmyadding-table'>
 
                                         <tbody>
                                             <tr key="">

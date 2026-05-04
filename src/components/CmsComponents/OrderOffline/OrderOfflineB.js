@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form";
 import SendIcon from "@mui/icons-material/Send";
 
 import { Eye } from "@phosphor-icons/react";
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import ApiPostX from '../../../utils/ApiServicesX/ApiPostX';
 import LodingA from '../../../utils/LodingA';
 import AlertQ from '../../../utils/AlertFunc/AlertQ';
@@ -37,6 +37,8 @@ export default function OrderOfflineB(props) {
     const [creatorName, setCreatorName] = useState('')
     const [appravlDetal, setAppravlDetal] = useState([])
     const gridRef = useRef();
+    const gridRefB = useRef();
+    const location = useLocation();
     const userRole = userDetail?.role;
     const [loadingFlag, setLoadingFlag] = useState(false)
     const [orderStatus, setOrderStatus] = useState('')
@@ -77,6 +79,51 @@ export default function OrderOfflineB(props) {
     };
 
     ////////////////////////////////////
+    //////////////start بخش مربوط به گرفتن کویری از آدرس و جستجو در جدول 
+    // دریافت GUID از URL
+    const getGuidFromUrl = () => {
+        const searchParams = new URLSearchParams(location.search);
+        return searchParams.get('id');
+    };
+
+    const guid = getGuidFromUrl();
+    const highlightAndScrollToRow = (guid) => {
+        if (!gridRefB.current?.api) return;
+
+        const api = gridRefB.current.api;
+        let targetNode = null;
+
+        api.forEachNode((node) => {
+            if (node.data && String(node.data.id) === guid) {
+                targetNode = node;
+            }
+        });
+
+        if (targetNode) {
+            // اسکرول به ردیف
+            api.ensureIndexVisible(targetNode.rowIndex, 'middle');
+
+            // انتخاب ردیف (روش صحیح)
+            targetNode.setSelected(true, false);
+
+            // اگر می‌خواهید فقط یک ردیف انتخاب شود
+            // targetNode.setSelected(true, true);
+        }
+    };
+    // هایلایت کردن ردیف مربوط به GUID
+    useEffect(() => {
+        if (guid && gridRefB.current) {
+            setLoadingFlag(true)
+            setTimeout(() => {
+                setLoadingFlag(false)
+                highlightAndScrollToRow(guid)
+
+            }, 3000);
+        }
+    }, [guid]);
+    //////////////////end/////
+
+
 
     const funcB = (result) => {
         AlertError(`${result}`)
@@ -638,7 +685,7 @@ export default function OrderOfflineB(props) {
 
 
 
-            <BaseGrid rowData={userOrders} colDefs={colDefs} rtl={true} />
+            <BaseGrid ref={gridRefB} rowData={userOrders} colDefs={colDefs} rtl={true} />
 
 
             <Modal show={show} fullscreen={true} onHide={() => setShow(false)}>

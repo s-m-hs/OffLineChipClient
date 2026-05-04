@@ -4,7 +4,7 @@ import { CmsContext, FactorContext } from '../../../context/CmsContext';
 import { useState } from 'react';
 import PcbMyAdding from './AllPCBLists/PcbMyAdding';
 export default function PCBLIst() {
-  const [flagResetInput, setFlagResetInput] = useState("A")
+  const [flagResetInput, setFlagResetInput] = useState("B")
 
   const ffc = (tabName) => {
     setFlagResetInput(tabName)
@@ -20,14 +20,12 @@ export default function PCBLIst() {
         onSelect={ffc}
       // onClick={()=>ffc(id)}
       >
-        <Tab eventKey="A" title="سفارشات PCB ایجاد شده توسط من" style={{ background: 'inherit' }}>
-          {flagResetInput == "A" && <PcbMyAdding componentTyp="A" />}
-        </Tab>
-
-
-
         <Tab eventKey="B" title="سفارشات PCB زیر مجموعه من" style={{ background: 'inherit' }}>
           {flagResetInput == "B" && <PcbMyAdding componentTyp="B" />}
+        </Tab>
+
+        <Tab eventKey="A" title="سفارشات PCB ایجاد شده توسط من" style={{ background: 'inherit' }}>
+          {flagResetInput == "A" && <PcbMyAdding componentTyp="A" />}
         </Tab>
 
         <Tab eventKey="C" title="سفارشات PCB ارجاع شده من" style={{ background: 'inherit' }}>

@@ -77,13 +77,20 @@ cursor: pointer;
 .pcbmyadding-table td{
     position: relative;
     max-width: 30px !important;
+    color: red !important ;
+text-align: end;
+font-weight: 600;
+font-size: 16PX;
 }
 
 
 .pcbmyadding-table label{
     position: absolute;
-    right: 10px;
-    top: -10px;
-    font-size: 12px;
-    font-weight: 600;
+    height: 50%;
+    color: black;
+    /* background-color: aqua; */
+right: 0;
+    top: 0px;
+    font-size: 15px;
+    font-weight: 700;
 }

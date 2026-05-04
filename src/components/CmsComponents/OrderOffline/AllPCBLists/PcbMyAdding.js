@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import './PcbMyAdding.css'
 import BaseGrid from '../../../Grid/BaseGrid'
 import ApiGetX from '../../../../utils/ApiServicesX/ApiGetX'
@@ -19,9 +19,13 @@ import AlertError from '../../../../utils/AlertFunc/AlertError';
 import ApiGetX3 from '../../../../utils/ApiServicesX/ApiGetX3';
 import AlertQ from '../../../../utils/AlertFunc/AlertQ';
 import ChatPanel from '../ChatPanel';
+import { useLocation } from 'react-router-dom';
+import LodingA from '../../../../utils/LodingA';
 
 export default function PcbMyAdding(props) {
     let { userDetail, setUserDetail } = useContext(CmsContext)
+    const gridRefB = useRef();
+    const location = useLocation();
     const [allOrder, setAllOrder] = useState([])
     const [orderItems, setOrderItewms] = useState([])
     const [orderId, setOrderId] = useState('')
@@ -43,6 +47,52 @@ export default function PcbMyAdding(props) {
     const faramoj = 1
     const pcb = 2
     const canceled = -1
+
+
+    //////////////start بخش مربوط به گرفتن کویری از آدرس و جستجو در جدول 
+    // دریافت GUID از URL
+    const getGuidFromUrl = () => {
+        const searchParams = new URLSearchParams(location.search);
+        return searchParams.get('id');
+    };
+
+    const guid = getGuidFromUrl();
+    const highlightAndScrollToRow = (guid) => {
+        if (!gridRefB.current?.api) return;
+
+        const api = gridRefB.current.api;
+        let targetNode = null;
+
+        api.forEachNode((node) => {
+            if (node.data && String(node.data.id) === guid) {
+                targetNode = node;
+            }
+        });
+
+        if (targetNode) {
+            // اسکرول به ردیف
+            api.ensureIndexVisible(targetNode.rowIndex, 'middle');
+
+            // انتخاب ردیف (روش صحیح)
+            targetNode.setSelected(true, false);
+
+            // اگر می‌خواهید فقط یک ردیف انتخاب شود
+            // targetNode.setSelected(true, true);
+        }
+    };
+    // هایلایت کردن ردیف مربوط به GUID
+    useEffect(() => {
+
+        if (guid && gridRefB.current) {
+            setLoadingFlag(true)
+            setTimeout(() => {
+                setLoadingFlag(false)
+                highlightAndScrollToRow(guid)
+
+            }, 3000);
+        }
+    }, [guid]);
+    //////////////////end/////
 
 
     const colDefs = ([
@@ -334,7 +384,7 @@ export default function PcbMyAdding(props) {
         if (loadingFlag) {
             setTimeout(() => {
                 setLoadingFlag(false)
-            }, 1500);
+            }, 3500);
         }
     }, [loadingFlag])
     useEffect(() => {
@@ -360,7 +410,9 @@ export default function PcbMyAdding(props) {
 
 
             <div style={{ height: "700px" }}>
-                <BaseGrid rowData={allOrder} colDefs={colDefs} rtl={true} />
+                {loadingFlag && <LodingA isShow={true} />
+                }
+                <BaseGrid ref={gridRefB} rowData={allOrder} colDefs={colDefs} rtl={true} />
             </div >
 
 

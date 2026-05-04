@@ -100,7 +100,7 @@ export default function OrderOffline(props) {
         accessLevel: { required: "accessLevel is required" },
     };
 
-
+    //////////////start بخش مربوط به گرفتن کویری از آدرس و جستجو در جدول 
     // دریافت GUID از URL
     const getGuidFromUrl = () => {
         const searchParams = new URLSearchParams(location.search);
@@ -134,13 +134,15 @@ export default function OrderOffline(props) {
     // هایلایت کردن ردیف مربوط به GUID
     useEffect(() => {
         if (guid && gridRefB.current) {
+            setLoadingFlag(true)
             setTimeout(() => {
+                setLoadingFlag(false)
                 highlightAndScrollToRow(guid)
 
             }, 3000);
         }
     }, [guid]);
-
+    //////////////////end/////
 
     ////////////////////////////////////
     const CustomTooltip = (props) => {

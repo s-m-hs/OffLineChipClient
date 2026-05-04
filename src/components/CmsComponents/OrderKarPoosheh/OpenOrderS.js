@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import BaseGrid from '../../Grid/BaseGrid'
 import DateFormat from '../../../utils/DateFormat';
 import ApiGetX2 from '../../../utils/ApiServicesX/ApiGetX2';
 import { useNavigate } from 'react-router-dom';
+import { MoveUp } from '@mui/icons-material';
+import { CmsContext } from '../../../context/CmsContext';
+import { PurchasingExpert, PurchasingManager } from '../../../utils/Variable';
+import { AwaitingCustomerApproval, Bom, InOrderToSupply, Inquiring, InSupply, PCB, Pending } from '../../../utils/Enums';
 
 export default function OpenOrderS(props) {
+    let { userDetail } = useContext(CmsContext)
+
     const [openOrders, setOpenOrders] = useState([])
-    const pending = 10
-    const AwaitingCustomerApproval = 20
-    const bom = 1
-    const pcb = 2
-    const inquery = 3
+    // const bom = 1
+    // const pcb = 2
 
     const navigate = useNavigate();
 
@@ -26,12 +29,21 @@ export default function OpenOrderS(props) {
         },
 
         {
-            field: '', headerName: "کد سفارش", width: 150,
+            field: '', headerName: "انتقال به سفارش", maxWidth: 180,
             cellRenderer: (params) => (
                 <>
-                    <button onClick={() => {
-                        navigate(`/p-admin/OrderLists?id=${params.data.id}`) ///انتقال به صفحه 
-                    }} >*</button>
+                    <button className='btn btn-light' onClick={() => {
+
+                        const url = (props.orderType == Bom && (userDetail.role == PurchasingExpert || userDetail.role == PurchasingManager)) ? `/p-admin/OrderListsB?id=${params.data.id}` :
+                            (props.orderType == Bom && (userDetail.role != PurchasingExpert && userDetail.role != PurchasingManager)) ? `/p-admin/OrderLists?id=${params.data.id}` :
+                                (props.orderType == PCB && (userDetail.role != PurchasingExpert && userDetail.role != PurchasingManager)) ?
+                                    `/p-admin/PCBLIst?id=${params.data.id}` :
+                                    (props.orderType == PCB && (userDetail.role == PurchasingExpert || userDetail.role == PurchasingManager)) ?
+                                        `/p-admin/PCBLIstB?id=${params.data.id}` : ""
+                        navigate(url) ///انتقال به صفحه 
+                    }} >
+                        <MoveUp />
+                    </button>
                 </>
             )
 
@@ -45,7 +57,12 @@ export default function OpenOrderS(props) {
         {
             field: 'orderStatus', headerName: "وضعیت سفارش", width: 200, cellStyle: { color: "#454e4c", fontWeight: '700' }, cellRenderer: (params) => (
                 <>
-                    {params.data.orderStatus == AwaitingCustomerApproval ? "در انتظار تایید مشتری" : "در حال ثبت سفارش"}
+                    {params.data.orderStatus == AwaitingCustomerApproval ? "در انتظار تایید مشتری" :
+                        params.data.orderStatus == Pending ? "در حال ثبت سفارش" :
+                            params.data.orderStatus == Inquiring ? "در حال استعلام گیری" :
+                                params.data.orderStatus == InOrderToSupply ? "در صف خرید" :
+                                    params.data.orderStatus == InSupply ? "در حال تامین" : ""
+                    }
                 </>
             )
 
@@ -64,8 +81,8 @@ export default function OpenOrderS(props) {
     ]);
 
     const getOpenOrder = () => {
-        const url = props.orderType == bom ? `/api/CyOrdersB/openOrder` :
-            props.orderType == pcb ? `/api/CyPCB/openPcbOrder` : ''
+        const url = props.orderType == Bom ? `/api/CyOrdersB/openOrder` :
+            props.orderType == PCB ? `/api/CyPCB/openPcbOrder` : ''
 
         ApiGetX2(url, setOpenOrders)
     }
