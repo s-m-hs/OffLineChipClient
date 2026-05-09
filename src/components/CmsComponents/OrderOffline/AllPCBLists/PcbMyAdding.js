@@ -426,7 +426,63 @@ export default function PcbMyAdding(props) {
             }
 
             >
-                <Modal.Header closeButton></Modal.Header>
+                <Modal.Header closeButton>
+
+                    <div className=' p-1 pcbmyadding-footer-div'>
+                        <div className={(orderStatusEnum == 10 || orderStatusEnum == 20) ? "" : 'disabled '} >
+
+                            <div className="orderoff-footer-div ">
+
+                                <div className=''>
+                                    <button className='btn btn-light pcbmyadding-row5-firstOk' onClick={() => orderItemsOk()}> ثبت اولیه  ✅  <div className='pcbmyadding-card-chekB' >{orderItems?.levelOk ? UserType.filter(filter => (filter.enum == orderItems?.levelOk))[0]?.name : ''}</div></button>
+
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+
+
+                        <div >
+                            <div className="orderoff-footer-div ">
+                                <button className='orderOff-status-btn btn btn-info '> زمان آغاز سفارش :
+                                    <DateFormat dateString={orderItems.sendDate} />
+                                </button>
+                            </div>
+                        </div>
+
+
+
+                        <div >
+
+
+
+                            {((userDetail.role == "DepartmentManager" || userDetail.role == "GeneralManager") && (orderStatusEnum == 10 || orderStatusEnum == 20)) &&
+                                <button type='button'
+                                    onClick={handleSave}
+                                    className="btn btn-success">
+                                    <span>تغییر به :</span>
+                                    <ArrowBack size={40} style={{ color: '#f80606', margin: '2px' }} />
+                                    <span>{orderNextStatus}</span>
+
+                                </button>
+                            }
+
+                            {((userDetail.role == "DepartmentManager" || userDetail.role == "GeneralManager") && (orderStatusEnum == 10 || orderStatusEnum == 20)) &&
+                                <button type='button'
+                                    onClick={cancelOrder} className="btn btn-danger orderOff-cancel-btn ">
+                                    <span>لغو سفارش</span>
+                                </button>
+                            }
+
+                        </div>
+
+                    </div>
+
+
+                </Modal.Header>
                 <Modal.Body >
                     <>
                         <div className={orderStatusEnum == canceled ? 'orderOffLine-wrapper disabled' : 'orderOffLine-wrapper'} >
@@ -562,7 +618,7 @@ export default function PcbMyAdding(props) {
                                                 <td><label> شماره سفارش :</label>{orderItems.pcbNumber}</td>
                                                 <td><label>درخواست دهنده :</label>{orderItems.creatorName}</td>
                                                 <td> <label>زمان ثبت درخواست :</label><DateFormat dateString={orderItems.orderDate} /></td>
-                                                <td> <label>  وضعیت سفارش :</label>{
+                                                <td style={{ backgroundColor: "#ffc107" }}> <label >  وضعیت سفارش :</label>{
                                                     OrderStatusList.filter(filter => (
                                                         filter.statusId == orderItems.status
                                                     ))[0]?.status
@@ -579,7 +635,10 @@ export default function PcbMyAdding(props) {
                                                         filter.enumId == orderItems.currency
                                                     ))[0]?.currency
                                                 }</td>
-                                                <td><label> زمان تامین :</label>{orderItems.duration ? orderItems.duration : 0}</td>
+
+
+                                                <td style={{ backgroundColor: "#ffc107" }}><label>وضعیت(درحال تامین) :</label>{orderItems.inSupplyStatus ? orderItems.inSupplyStatus : '*****'}</td>
+
                                             </tr>
 
                                             <tr key="">
@@ -588,8 +647,7 @@ export default function PcbMyAdding(props) {
                                             value={orderItems.creatorComment}
                                             disabled  ></textarea></td> */}
 
-                                                <td><label>وضعیت(درحال تامین) :</label>{orderItems.inSupplyStatus ? orderItems.inSupplyStatus : '*****'}</td>
-
+                                                <td><label> زمان تامین :</label>{orderItems.duration ? orderItems.duration : 0}</td>
                                                 <td colspan="4"><label>توصیحات فروشنده :</label>         <textarea
                                                     className='pcbmyadding-comment'
                                                     value={orderItems.commentB}
@@ -741,62 +799,6 @@ export default function PcbMyAdding(props) {
 
                                     </div>
 
-
-                                    {/* row-5 */}
-                                    <div className='row boxSh p-3 pcbmyadding-footer-div'>
-                                        <div className={(orderStatusEnum == 10 || orderStatusEnum == 20) ? 'col-3  ' : 'col-3 disabled '} >
-
-                                            <div className="orderoff-footer-div ">
-
-                                                <div className=''>
-                                                    <button className='btn btn-light pcbmyadding-row5-firstOk' onClick={() => orderItemsOk()}> ثبت اولیه  ✅  <div className='pcbmyadding-card-chekB' >{orderItems?.levelOk ? UserType.filter(filter => (filter.enum == orderItems?.levelOk))[0]?.name : ''}</div></button>
-
-                                                </div>
-                                            </div>
-
-
-
-                                        </div>
-
-
-
-                                        <div className='col-3'>
-                                            <div className="orderoff-footer-div ">
-                                                <button className='orderOff-status-btn btn btn-info '> زمان آغاز سفارش :
-                                                    <DateFormat dateString={orderItems.sendDate} />
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div className='col-3'></div>
-
-
-                                        <div className='col-3'>
-
-                                            <div className="orderoff-footer-div ">
-
-
-                                                {((userDetail.role == "DepartmentManager" || userDetail.role == "GeneralManager") && (orderStatusEnum == 10 || orderStatusEnum == 20)) &&
-                                                    <button type='button'
-                                                        onClick={handleSave}
-                                                        className="btn btn-success">
-                                                        <span>تغییر به :</span>
-                                                        <ArrowBack size={40} style={{ color: '#f80606', margin: '2px' }} />
-                                                        <span>{orderNextStatus}</span>
-
-                                                    </button>
-                                                }
-
-                                                {((userDetail.role == "DepartmentManager" || userDetail.role == "GeneralManager") && (orderStatusEnum == 10 || orderStatusEnum == 20)) &&
-                                                    <button type='button'
-                                                        onClick={cancelOrder} className="btn btn-danger orderOff-cancel-btn">
-                                                        <span>لغو سفارش</span>
-                                                    </button>
-                                                }
-
-                                            </div>
-                                        </div>
-
-                                    </div>
 
                                     <div />
 

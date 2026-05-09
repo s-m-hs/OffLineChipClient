@@ -343,7 +343,7 @@ export default function OrderOfflineB(props) {
                             }
 
                             }>
-                            <Edit style={{ color: '#fff' }} />
+                            <Edit style={{ color: '#000000' }} />
                         </button>)
                     }
                 </>
@@ -690,32 +690,64 @@ export default function OrderOfflineB(props) {
 
             <Modal show={show} fullscreen={true} onHide={() => setShow(false)}>
                 <Modal.Header
-                    dir='ltr'
+                    // dir='ltr'
                     closeButton
                 >
-                    <button className='btn btn-success disabled'>سمت : {userRole}</button>
 
-                    <button
-                        className='btn btn-light '
-                        style={{ width: "60px", height: "30px", fontSize: "20px", padding: "1px", margin: '1px' }}
-                        onClick={() => {
-                            downloadExcel(orderId)
-                        }}
-                    >
-                        <Download />
-                    </button>
 
-                    <div className='OrderOfflineB-exel-div  centerrc '>
-                        {!loadingFlag && orderStatusEnum == 15 && <div className='boxSh'>
-                            <span><UploadFileIcon />
-                                بارگزاری فایل اکسل
-                            </span>
-                            <input
-                                type="file"
-                                // className="order-right-message-file-input"
-                                onChange={(e) => setFile(e.target.files[0])}
-                            />
-                        </div>}
+
+
+                    <div className="orderoff-footer-div ">
+
+                        <button className='btn btn-success disabled'>سمت : {userRole}
+                            <span> شماره سفارش: {orderDetails.orderCode}</span>
+
+                        </button>
+
+                        <button
+                            className='btn btn-light '
+                            style={{ width: "60px", height: "30px", fontSize: "20px", padding: "1px", margin: '1px' }}
+                            onClick={() => {
+                                downloadExcel(orderId)
+                            }}
+                        >
+                            <Download />
+                        </button>
+
+                        <div className='OrderOfflineB-exel-div  centerrc '>
+                            {!loadingFlag && orderStatusEnum == 15 && <div className='boxSh'>
+                                <span><UploadFileIcon />
+                                    بارگزاری فایل اکسل
+                                </span>
+                                <input
+                                    type="file"
+                                    // className="order-right-message-file-input"
+                                    onChange={(e) => setFile(e.target.files[0])}
+                                />
+                            </div>}
+
+                        </div>
+
+
+                        <button className='orderOff-status-btn btn btn-info '> زمان آغاز سفارش :<DateFormat dateString={startOrderDate} /></button>
+
+                        {/* <span>تأیید شده: {approvalsList?.filter(a => a.isApproved).length}/{approvalsList?.length}</span> */}
+
+                        {/* <span>{orderDetails.totalAmount}</span> */}
+
+                        <button className='orderOff-status-btn btn btn-warning '>وضعیت سفارش :{orderStatus}</button>
+
+
+                        {((userDetail.role == "PurchasingExpert" || userDetail.role == "PurchasingManager") && orderStatusEnum != 40) && (orderStatusEnum == 15 || orderStatusEnum == 25 || orderStatusEnum == 30) &&
+                            <button type='button'
+                                onClick={handleSave} className="btn btn-success">
+
+                                <span>تغییر به :</span>
+                                <ArrowBack size={40} style={{ color: '#f80606', margin: '2px' }} />
+
+                                <span>{orderNextStatus}</span>
+                            </button>
+                        }
 
                     </div>
 
@@ -749,6 +781,9 @@ export default function OrderOfflineB(props) {
 
 
                         <div className={`orderOffLine-container-div ${isShowMessage ? 'shrink' : ''}`}>
+                            <select>
+                                <option value="" key="">واحد پول</option>
+                            </select>
 
                             <div style={{ height: "800px" }}>
                                 <BaseGrid ref={gridRef}
@@ -765,28 +800,6 @@ export default function OrderOfflineB(props) {
                                     })} defaultColDef={defaultColDef} colDefs={colDefsB} rtl={true} />
                             </div>
 
-
-                            <div className="orderoff-footer-div ">
-                                <button className='orderOff-status-btn btn btn-warning '>وضعیت سفارش :{orderStatus}</button>
-
-                                <button className='orderOff-status-btn btn btn-info '> زمان آغاز سفارش :<DateFormat dateString={startOrderDate} /></button>
-
-                                {/* <span>تأیید شده: {approvalsList?.filter(a => a.isApproved).length}/{approvalsList?.length}</span> */}
-
-                                {/* <span>{orderDetails.totalAmount}</span> */}
-                                <span>{orderDetails.orderCode}</span>
-                                {((userDetail.role == "PurchasingExpert" || userDetail.role == "PurchasingManager") && orderStatusEnum != 40) && (orderStatusEnum == 15 || orderStatusEnum == 25 || orderStatusEnum == 30) &&
-                                    <button type='button'
-                                        onClick={handleSave} className="btn btn-success">
-
-                                        <span>تغییر به :</span>
-                                        <ArrowBack size={40} style={{ color: '#f80606', margin: '2px' }} />
-
-                                        <span>{orderNextStatus}</span>
-                                    </button>
-                                }
-
-                            </div>
                         </div>
 
                     </div>

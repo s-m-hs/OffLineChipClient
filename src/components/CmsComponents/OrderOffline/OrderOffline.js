@@ -1170,11 +1170,37 @@ export default function OrderOffline(props) {
                 setMentionList([])
             }}>
                 <Modal.Header
-                    dir='ltr'
+                    // dir='ltr'
                     closeButton
-                ><button className='btn btn-success disabled'>سمت : {userRole} ___ <span>تأیید شده: {approvalsList?.filter(a => a.isApproved).length}/{approvalsList?.length}</span>___
+                >
+                    <div className="orderoff-footer-div ">
+                        <button className='btn btn-success disabled'>سمت : {userRole} ___ <span>تأیید شده: {approvalsList?.filter(a => a.isApproved).length}/{approvalsList?.length}</span>___
 
-                        <span> کد سفارش: {orderDetails.orderCode}</span></button>
+                            <span> کد سفارش: {orderDetails.orderCode}</span></button>
+
+
+
+                        <button className='orderOff-status-btn btn btn-info '> زمان آغاز سفارش :<DateFormat dateString={startOrderDate} /></button>
+
+                        <button className='orderOff-status-btn btn btn-warning '>وضعیت سفارش :{orderStatus}</button>
+
+                        {((userDetail.role == "DepartmentManager" || userDetail.role == "GeneralManager") && (orderStatusEnum == 10 || orderStatusEnum == 20)) &&
+                            <button type='button'
+                                onClick={handleSave} className="btn btn-success">
+                                <span>تغییر به :</span>
+                                <ArrowBack size={40} style={{ color: '#f80606', margin: '2px' }} />
+                                <span>{orderNextStatus}</span>
+
+                            </button>
+                        }
+                        {((userDetail.role == "DepartmentManager" || userDetail.role == "GeneralManager") && (orderStatusEnum == 10 || orderStatusEnum == 20)) &&
+                            <button type='button'
+                                onClick={cancelOrder} className="btn btn-danger orderOff-cancel-btn">
+                                <span>لغو سفارش</span>
+                            </button>
+                        }
+                    </div>
+
                 </Modal.Header>
                 <Modal.Body>
                     <>
@@ -1342,34 +1368,6 @@ export default function OrderOffline(props) {
                                         // })}
                                         defaultColDef={defaultColDef} colDefs={colDefsB} rtl={true} />
                                 </div>
-
-
-                                <div className="orderoff-footer-div ">
-                                    <button className='orderOff-status-btn btn btn-warning '>وضعیت سفارش :{orderStatus}</button>
-
-
-                                    <button className='orderOff-status-btn btn btn-info '> زمان آغاز سفارش :<DateFormat dateString={startOrderDate} /></button>
-
-
-                                    {((userDetail.role == "DepartmentManager" || userDetail.role == "GeneralManager") && (orderStatusEnum == 10 || orderStatusEnum == 20)) &&
-                                        <button type='button'
-                                            onClick={handleSave} className="btn btn-success">
-                                            <span>تغییر به :</span>
-                                            <ArrowBack size={40} style={{ color: '#f80606', margin: '2px' }} />
-                                            <span>{orderNextStatus}</span>
-
-                                        </button>
-                                    }
-                                    {((userDetail.role == "DepartmentManager" || userDetail.role == "GeneralManager") && (orderStatusEnum == 10 || orderStatusEnum == 20)) &&
-                                        <button type='button'
-                                            onClick={cancelOrder} className="btn btn-danger orderOff-cancel-btn">
-                                            <span>لغو سفارش</span>
-                                        </button>
-                                    }
-                                </div>
-
-
-
 
                             </div>
 

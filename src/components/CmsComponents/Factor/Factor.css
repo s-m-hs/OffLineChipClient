@@ -10,7 +10,7 @@
   position: absolute;
   height: 200px;
   width: 400px;
-  background-color: #d7ddd8;
+  background-color: #f0f0ff;
   /* opacity: 0.9; */
   left: 5px;
   border-radius: 5px;
@@ -43,11 +43,13 @@
 .items-table {
   max-height: 600px;
   overflow: auto;
+  display: block;
 }
 .items-table table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
+  display: table;
 }
 .items-table th,
 .items-table td {
@@ -55,16 +57,28 @@
   padding: 12px;
   text-align: center;
 }
-.items-table th {
-  background: #007bff;
-  color: white;
+.items-table thead {
+  position: sticky;
+  top: 0;
+  background-color: #0f0f0f; /* رنگ پس‌زمینه هدر */
+  z-index: 10;
+}
+.items-table thead th {
+  position: sticky;
+  top: 0;
+  background-color: #3a3a3a;
+  border-bottom: 2px solid #ddd;
+   color: white;
 }
 .items-table input,
 .items-table textarea {
   width: 100%;
   border: none;
   padding: 5px;
+  outline-color: aliceblue;
 }
+
+
 .totals-box {
   background: #e9ecef;
   padding: 20px;

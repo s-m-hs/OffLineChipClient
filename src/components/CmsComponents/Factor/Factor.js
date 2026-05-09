@@ -476,12 +476,16 @@ const Factor = (props) => {
             </div>
 
             {/* جدول */}
-            <div className=' Factor-header-items mb-3' style={{ height: "50px" }}>
+            <div className=' Factor-header-items mb-3 centerrc' style={{ height: "50px" }}>
 
                 <button type='button' className="add-btn" onClick={() => {
                     // setShow(true)
                     addItem()
                 }}><Add></Add> اضافه کردن کالا</button>
+
+
+
+
 
                 <div className='factor-exel-div boxSh centercc'>
                     <button type='button'
@@ -509,6 +513,8 @@ const Factor = (props) => {
                     <Search />
                 </button>
 
+
+                <button className="btn btn-primary btn-lg" type='submit'><SaveOutlined style={{ color: '#fff' }} /> ثبت سفارش</button>
                 {/* <div className="login-label-float Factor-searchBox"  >
                         <input
                             name="searchPartNumber"
@@ -527,7 +533,7 @@ const Factor = (props) => {
             <div className="items-table">
 
 
-                <table>
+                <table >
                     <thead>
                         <tr>
                             <th>ردیف</th>
@@ -546,12 +552,16 @@ const Factor = (props) => {
                             <tr key={index}>
                                 <td>{index + 1}</td>
 
-                                <td><input value={item.partNumber || ''} onChange={e => updateItemField(item.ID, 'partNumber', e.target.value)} /></td>
+                                <td><input value={item.partNumber || ''}
+                                    onChange={e => {
+                                        const englishOnly = e.target.value.replace(/[^a-zA-Z0-9\-/._(){}[":;'=^`&^%$*#@+><?!]/g, '');
+                                        updateItemField(item.ID, 'partNumber', englishOnly)
+                                    }} /></td>
 
-                                <td><input value={item.manufacturer || ''} onChange={e => updateItemField(item.ID, 'manufacturer', e.target.value)} /></td>
+                                <td><input value={item.manufacturer || ''}
+                                    onChange={e => updateItemField(item.ID, 'manufacturer', e.target.value)} /></td>
 
                                 <td><input value={item.creatorCommentA || ''} onChange={e => updateItemField(item.ID, 'creatorCommentA', e.target.value)} /></td>
-
                                 <td >
                                     <input type="number" value={item.quantity || 0}
                                         onChange={e => {
@@ -663,10 +673,6 @@ const Factor = (props) => {
                     rows={4} />
             </div>
 
-            <div className="footer-section">
-                <button className="submit-btn" type='submit'><SaveOutlined style={{ color: '#fff' }} /> ثبت </button>
-
-            </div>
 
             <Modal show={show} fullscreen={fullscreen} onHide={() => {
                 setShow(false)
