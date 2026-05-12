@@ -94,7 +94,7 @@ export default function CmsSidebarContent() {
           </NavLink>
 
 
-          <NavLink className="cmssidebar-div" to={"product"}>
+          <NavLink className="cmssidebar-div" to={"ManagePage"}>
             <MdManageAccounts size={20} style={{ marginLeft: "5px" }} />
             <span>مدیریت عمومی</span>
           </NavLink>

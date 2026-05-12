@@ -11,12 +11,12 @@ import AlertError from '../../../utils/AlertFunc/AlertError';
 import { useForm } from "react-hook-form";
 import SendIcon from "@mui/icons-material/Send";
 
-import { Eye } from "@phosphor-icons/react";
+import { CurrencyDollar, CurrencyDollarSimple, Eye } from "@phosphor-icons/react";
 import { Link, useLocation } from 'react-router-dom';
 import ApiPostX from '../../../utils/ApiServicesX/ApiPostX';
 import LodingA from '../../../utils/LodingA';
 import AlertQ from '../../../utils/AlertFunc/AlertQ';
-import { ArrowBack, CheckCircleOutline, CheckCircleRounded, CheckCircleSharp, Download, Edit } from '@mui/icons-material';
+import { ArrowBack, CheckCircleOutline, CheckCircleRounded, CheckCircleSharp, CurrencyYuan, Download, Edit, Yard } from '@mui/icons-material';
 import ApiPuX2 from '../../../utils/ApiServicesX/ApiPutX2';
 import DownloadFile from '../../../utils/DownloadFile';
 import UploadFileIcon from "@mui/icons-material/UploadFile";
@@ -24,6 +24,11 @@ import ChangeUplode from '../../../utils/ChangeUplode';
 import apiUrl from '../../../utils/ApiConfig';
 import getRowClass from './RowClass';
 import ChatPanel from './ChatPanel';
+import { FaDollarSign } from 'react-icons/fa';
+import { Dollor, Inquiring, Rial, Yuan } from '../../../utils/Enums';
+import ApiGetX4 from '../../../utils/ApiServicesX/ApiGetX4';
+import { inSupplyStatus, OrderStatusList } from '../../../utils/OrderStatusList';
+import ApiPutX0 from '../../../utils/ApiServicesX/ApiPutX0';
 
 export default function OrderOfflineB(props) {
     const { userDetail, orderDetails, setOrderDetails } = useContext(CmsContext)
@@ -45,6 +50,8 @@ export default function OrderOfflineB(props) {
     const [orderNextStatus, setOrderNextStatus] = useState('')
     const [orderStatusEnum, setOrderStatusEnum] = useState('')
     const [startOrderDate, setStartOrderDate] = useState('')
+    const [curency, setCurency] = useState('')
+    const [totalAmaunt, setTotalAmaunt] = useState(0)
 
 
     const [orderItemId, setOrderItemId] = useState('')
@@ -123,7 +130,7 @@ export default function OrderOfflineB(props) {
     }, [guid]);
     //////////////////end/////
 
-
+    ///////////////
 
     const funcB = (result) => {
         AlertError(`${result}`)
@@ -244,7 +251,7 @@ export default function OrderOfflineB(props) {
         },
         {
             field: 'orderStatus', headerName: "وضعیت سفارش", width: 200, cellStyle: { color: 'red', 'font-weight': '600' }, cellRenderer: (params) => (
-                <span>{orderStatusList.filter(filter => (filter.statusId === params.data.orderStatus))[0]?.status}</span>)
+                <span>{OrderStatusList.filter(filter => (filter.statusId === params.data.orderStatus))[0]?.status}</span>)
         },
         {
             headerName: 'مشاهده/دانلود', width: 200,
@@ -259,7 +266,10 @@ export default function OrderOfflineB(props) {
                             setOrderDetails(params.data)
                             setOrderStatusEnum(params.data.orderStatus)
                             setStartOrderDate(params.data.startOrderDate)
-                            // console.log(params)
+                            setCurency(params.data.curency)
+                            setTotalAmaunt(params.data.totalAmount)
+                            console.log(params)
+
                         }}
                     >
                         <Eye />
@@ -357,29 +367,35 @@ export default function OrderOfflineB(props) {
 
 
         },
-        {
-            field: 'quantity', headerName: " تعداد", width: 100,      // ✅ fixed کوچکتر
-            minWidth: 100,
-            maxWidth: 130,
-        },
+
         {
             field: 'manufacturer', headerName: "شرکت سازنده",
             width: 200,      // ✅ fixed کوچکتر
             minWidth: 200,
             maxWidth: 200,
         },
-
+        {
+            field: 'quantity', headerName: " تعداد", width: 150,      // ✅ fixed کوچکتر
+            minWidth: 100,
+            maxWidth: 150,
+        },
         {
             field: 'unitPrice', headerName: "قیمت واحد",
             width: 150,      // ✅ fixed کوچکتر
             minWidth: 150,
             maxWidth: 150,
+            // cellRenderer: (params) => (
+            //     <><span  >{params.data.curency = Yuan ? <CurrencyYuan style={{ fontSize: "15px" }} /> :
+            //         params.data.curency = Dollor ? <CurrencyDollar style={{ fontSize: "15px" }} /> :
+            //             params.data.curency = Rial ? "Rial" : ""
+            //     }</span></>
+            // )
         },
         {
             field: 'totalPrice', headerName: "قیمت مجموع",
             width: 150,      // ✅ fixed کوچکتر
             minWidth: 150,
-            maxWidth: 150,
+            maxWidth: 300,
         },
 
         {
@@ -497,7 +513,12 @@ export default function OrderOfflineB(props) {
     }
     // بقیه توابع بدون تغییر...
     const handleSave = () => {
-        AlertQ("آیا از تایید فرایند سفارش اطمینان دارید ؟", "تایید لغو شد", ChangeOrderStatus)
+        if (curency == null && orderStatusEnum == Inquiring) {
+            AlertError("واحد ارز تعیین نشده است")
+        } else {
+            AlertQ("آیا از تایید فرایند سفارش اطمینان دارید ؟", "تایید لغو شد", ChangeOrderStatus)
+
+        }
     };
 
     const defaultColDef = {
@@ -522,23 +543,23 @@ export default function OrderOfflineB(props) {
     }
 
 
-    const orderStatusList = [
-        { id: 1, status: "ثبت سفارش", statusId: 10 },
-        { id: 2, status: "در حال استعلام گیری", statusId: 15 },
-        { id: 3, status: "در انتظار تایید مشتری", statusId: 20 },
-        { id: 3, status: "در صف خرید", statusId: 25 },
-        { id: 4, status: "در حال تامین", statusId: 30 },
-        { id: 4, status: "خاتمه یافته", statusId: 35 },
-        { id: 5, status: "خاتمه یافته", statusId: 40 },
-        { id: 6, status: "", statusId: 45 },
-        { id: 7, status: "تحویل داده شده", statusId: 50 },
-        { id: 8, status: "لغو شده", statusId: -1 },
-    ]
-    const inSupplyStatus = [
-        { id: 1, status: "در حال تامین" },
-        { id: 2, status: "در حال ارسال" },
-        { id: 3, status: "تحویل داده شده" },
-    ]
+    // const orderStatusList = [
+    //     { id: 1, status: "ثبت سفارش", statusId: 10 },
+    //     { id: 2, status: "در حال استعلام گیری", statusId: 15 },
+    //     { id: 3, status: "در انتظار تایید مشتری", statusId: 20 },
+    //     { id: 3, status: "در صف خرید", statusId: 25 },
+    //     { id: 4, status: "در حال تامین", statusId: 30 },
+    //     { id: 4, status: "خاتمه یافته", statusId: 35 },
+    //     { id: 5, status: "خاتمه یافته", statusId: 40 },
+    //     { id: 6, status: "", statusId: 45 },
+    //     { id: 7, status: "تحویل داده شده", statusId: 50 },
+    //     { id: 8, status: "لغو شده", statusId: -1 },
+    // ]
+    // const inSupplyStatus = [
+    //     { id: 1, status: "در حال تامین" },
+    //     { id: 2, status: "در حال ارسال" },
+    //     { id: 3, status: "تحویل داده شده" },
+    // ]
 
     const showOrderDetail = (data) => {
         setOrderItemSDetails(data)
@@ -546,10 +567,12 @@ export default function OrderOfflineB(props) {
         setItemQuntity(data.quantity)
         setShowB(true)
     }
-    const getOrderItem = () => {
-        alertA("ویرایش ")
+    const getOrderItem = (res) => {
+        alertA(res.msg)
         getOrderDetail(orderId)
         setShowB(false)
+        console.log(res)
+        setTotalAmaunt(res.totalAmount)
     }
     const editeOrderItem = (data) => {
         let obj = {
@@ -561,7 +584,7 @@ export default function OrderOfflineB(props) {
             totalPrice: data.unitPrice ? Number(itemQuntity) * data.unitPrice : 0,
 
         }
-        ApiPuX2(`/api/CyOrdersB/updateOrderItem`, obj, getOrderItem)
+        ApiPutX0(`/api/CyOrdersB/updateOrderItem`, obj, (res) => getOrderItem(res))
     }
     const editeInsupplyStatus = () => {
         let obj = {
@@ -594,7 +617,12 @@ export default function OrderOfflineB(props) {
         ApiGetX2(`/api/CyOrderMessage/GetMessagesByOrderID?OrderID=${id}&type=${type}`, setAllMessageA)
     }
 
-
+    const changeCurency = (curency) => {
+        ApiGetX2(`/api/CyOrdersB/setCurency?orderId=${orderId}&curency=${curency}`, (res) => {
+            alertA(res.msg)
+            getAllOrder()
+        })
+    }
 
     ////////////
     useEffect(() => {
@@ -616,10 +644,10 @@ export default function OrderOfflineB(props) {
     }, [orderItemS])
     useEffect(() => {
         if (orderItemS?.length > 0) {
-            setOrderStatus(orderStatusList?.filter(filter => (
+            setOrderStatus(OrderStatusList?.filter(filter => (
                 filter.statusId == orderDetails.orderStatus
             ))[0].status)
-            setOrderNextStatus(orderStatusList?.filter(filter => (
+            setOrderNextStatus(OrderStatusList?.filter(filter => (
                 filter?.statusId == (orderDetails?.orderStatus + 5)
             ))[0]?.status)
         }
@@ -655,6 +683,8 @@ export default function OrderOfflineB(props) {
         setFile('')
         setGuId('')
         getOrderDetail(orderId)////جهت رند مجدد جدول
+        getAllOrder()
+        setTotalAmaunt(result.totalAmount)
     }
     const setError = (result) => {
         setLoadingFlag(false)
@@ -695,14 +725,39 @@ export default function OrderOfflineB(props) {
                 >
 
 
-
-
                     <div className="orderoff-footer-div ">
 
-                        <button className='btn btn-success disabled'>سمت : {userRole}
-                            <span> شماره سفارش: {orderDetails.orderCode}</span>
+                        <table className='table table-bordered table-info orderOff-table' >
+                            <thead>
+                                <tr key="">
+                                    <th>سمت</th>
+                                    <th>شماره سفارش</th>
+                                    <th>وضعیت سفارش</th>
+                                    <th>زمان آغاز سفارش </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr key="">
+
+                                    <td>{userRole}</td>
+                                    <td>{orderDetails.orderCode}</td>
+                                    <td> {orderStatus}</td>
+                                    <td><DateFormat dateString={startOrderDate} /></td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+                        {/* 
+                        <button className='btn btn-success '><p>سمت : {userRole}</p>
+                            <p> شماره سفارش: {orderDetails.orderCode}</p>
 
                         </button>
+
+                        <button className='orderOff-status-btn btn btn-warning '><p>وضعیت سفارش : {orderStatus}</p>
+                            <p>زمان آغاز سفارش :<DateFormat dateString={startOrderDate} /></p>
+                        </button> */}
 
                         <button
                             className='btn btn-light '
@@ -729,13 +784,13 @@ export default function OrderOfflineB(props) {
                         </div>
 
 
-                        <button className='orderOff-status-btn btn btn-info '> زمان آغاز سفارش :<DateFormat dateString={startOrderDate} /></button>
+                        {/* <button className='orderOff-status-btn btn btn-info '> زمان آغاز سفارش :<DateFormat dateString={startOrderDate} /></button> */}
 
                         {/* <span>تأیید شده: {approvalsList?.filter(a => a.isApproved).length}/{approvalsList?.length}</span> */}
 
                         {/* <span>{orderDetails.totalAmount}</span> */}
 
-                        <button className='orderOff-status-btn btn btn-warning '>وضعیت سفارش :{orderStatus}</button>
+
 
 
                         {((userDetail.role == "PurchasingExpert" || userDetail.role == "PurchasingManager") && orderStatusEnum != 40) && (orderStatusEnum == 15 || orderStatusEnum == 25 || orderStatusEnum == 30) &&
@@ -779,11 +834,37 @@ export default function OrderOfflineB(props) {
                         />
 
 
-
                         <div className={`orderOffLine-container-div ${isShowMessage ? 'shrink' : ''}`}>
-                            <select>
-                                <option value="" key="">واحد پول</option>
-                            </select>
+                            <div className={orderStatusEnum == Inquiring ? 'centerrc ' : 'centerrc disabled'} >
+
+                                <button type='button' className={curency == Dollor ? 'btn btn-success m-1 btn-lg' : 'btn btn-outline-success m-1'}
+                                    onClick={(e) => {
+                                        setCurency(Dollor)
+                                        changeCurency(Dollor)
+                                    }}
+                                ><CurrencyDollar style={{ fontSize: "25px" }} /></button>
+                                <button className={curency == Yuan ? 'btn btn-primary m-1 btn-lg' : 'btn btn-outline-primary m-1'}
+                                    onClick={(e) => {
+                                        setCurency(Yuan)
+                                        changeCurency(Yuan)
+                                    }
+                                    }
+                                ><CurrencyYuan /></button>
+                                <button className={curency == Rial ? 'btn btn-info m-1 btn-lg'
+                                    : 'btn btn-outline-info m-1'
+                                } onClick={(e) => {
+                                    setCurency(Rial)
+                                    changeCurency(Rial)
+                                }
+
+                                }
+                                ><span style={{ fontSize: "18px" }}>Rial</span></button>
+
+                                <button style={{ minWidth: '300px', }} className='btn btn-outline-warning disabled btn-lg'>
+                                    {totalAmaunt.toLocaleString()}
+                                    <span style={{ fontSize: "15px", fontWeight: "600" }}> : مبلغ سفارش </span>
+                                </button>
+                            </div>
 
                             <div style={{ height: "800px" }}>
                                 <BaseGrid ref={gridRef}
@@ -832,7 +913,7 @@ export default function OrderOfflineB(props) {
                                         <td>{orderItemSDetails.partNumber}
                                         </td>
                                         <td>
-                                            <input type="number"{...register("unitPrice")} />
+                                            <input type="number" step="any"{...register("unitPrice")} />
                                         </td>
                                         <td>
                                             <input type="text" {...register("duration")} />
@@ -882,6 +963,6 @@ export default function OrderOfflineB(props) {
             </Modal>
 
 
-        </div>
+        </div >
     )
 }

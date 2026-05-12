@@ -11,5 +11,9 @@ export const Canceled = -1
 export const Bom = 1
 export const PCB = 2
 
+export const Yuan = 1
+export const Rial = 2
+export const Dollor = 3
+
 
 

@@ -19,6 +19,7 @@ import Typewriter from "typewriter-effect";
 import ApiGetB from "../../../utils/ApiServices/Configs/ApiGetB";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import fileUploadHandlerPdf from "../../../utils/FunctionsPdf";
+import ApiGetC from "../../../utils/ApiServices/Configs/ApiGetC";
 
 export default function Product() {
   const [categoryItem, setCategoriItem] = useState([]);
@@ -636,14 +637,14 @@ export default function Product() {
 
   ///////////////////////////////
   const GetCategoryBItem = () => {
-    ApiGetB("/api/CyProductCategory", setCategoriItemB, navigate);
+    ApiGetC("/api/CyProductCategory", setCategoriItemB, navigate);
   };
   const GetCategoryItem = () => {
-    ApiGetB("/api/CyCategories", setCategoriItem, navigate);
+    ApiGetC("/api/CyCategories", setCategoriItem, navigate);
   };
   //////////////////////////
   const GetmanufactureItem = () => {
-    ApiGetB("/api/CyManufacturer", setManufactureItem, navigate);
+    ApiGetC("/api/CyManufacturer", setManufactureItem, navigate);
   };
   /////////////////////
   const deleteHandler = (id) => {
@@ -1589,7 +1590,7 @@ export default function Product() {
                       color="primary"
                       shape="rounded"
                       style={{ direction: "ltr" }}
-                      //  onClick={() => ChangePage(page)}
+                    //  onClick={() => ChangePage(page)}
                     />
                   </div>
                 </>
@@ -1622,123 +1623,123 @@ export default function Product() {
                   </thead>
                   <tbody>
                     {!tableState &&
-                    productArray?.length != 0 &&
-                    !flagSearchNoImg
+                      productArray?.length != 0 &&
+                      !flagSearchNoImg
                       ? productArray.map((item, index) => (
-                          // {  ../../../../images/No_Image_Available.jpg}
-                          <tr key={item.id}>
-                            <td>{productNumberPagi + (index + 1)}</td>
-                            <td>
-                              {item.smallImage ? (
-                                <img
-                                  className="product-img"
-                                  src={item.smallImage}
-                                  alt=""
-                                />
-                              ) : (
-                                <img
-                                  src="../../../../images/40166.png"
-                                  alt=""
-                                  style={{ width: "45px" }}
-                                />
-                              )}
-                              {/* <td><img className='product-img' src={`https://${item.smallImage}` } alt="img" /> */}
-                            </td>
-                            {/* <td > {item.name}</td> */}
-                            <td>{item.partNo}</td>
-                            <td>{item.supply}</td>
-                            <td>{item.noOffPrice}</td>
+                        // {  ../../../../images/No_Image_Available.jpg}
+                        <tr key={item.id}>
+                          <td>{productNumberPagi + (index + 1)}</td>
+                          <td>
+                            {item.smallImage ? (
+                              <img
+                                className="product-img"
+                                src={item.smallImage}
+                                alt=""
+                              />
+                            ) : (
+                              <img
+                                src="../../../../images/40166.png"
+                                alt=""
+                                style={{ width: "45px" }}
+                              />
+                            )}
+                            {/* <td><img className='product-img' src={`https://${item.smallImage}` } alt="img" /> */}
+                          </td>
+                          {/* <td > {item.name}</td> */}
+                          <td>{item.partNo}</td>
+                          <td>{item.supply}</td>
+                          <td>{item.noOffPrice}</td>
 
-                            <td>
-                              {manufactureItem.filter((itemF) => {
+                          <td>
+                            {manufactureItem.filter((itemF) => {
+                              return itemF.id == item.cyManufacturerId;
+                            })[0] &&
+                              manufactureItem.filter((itemF) => {
                                 return itemF.id == item.cyManufacturerId;
-                              })[0] &&
-                                manufactureItem.filter((itemF) => {
-                                  return itemF.id == item.cyManufacturerId;
-                                })[0].name}
-                            </td>
+                              })[0].name}
+                          </td>
 
-                            <td>
-                              {categoryItem.filter((itemF) => {
+                          <td>
+                            {categoryItem.filter((itemF) => {
+                              return itemF.id == item.cyCategoryId;
+                            })[0] &&
+                              categoryItem.filter((itemF) => {
                                 return itemF.id == item.cyCategoryId;
-                              })[0] &&
-                                categoryItem.filter((itemF) => {
-                                  return itemF.id == item.cyCategoryId;
-                                })[0].text}
-                            </td>
+                              })[0].text}
+                          </td>
 
-                            <td>
-                              {categoryItemB.filter((itemF) => {
+                          <td>
+                            {categoryItemB.filter((itemF) => {
+                              return itemF.id == item.cyProductCategoryId;
+                            }).length != 0 &&
+                              categoryItemB.filter((itemF) => {
                                 return itemF.id == item.cyProductCategoryId;
-                              }).length != 0 &&
-                                categoryItemB.filter((itemF) => {
-                                  return itemF.id == item.cyProductCategoryId;
-                                })[0].name}
-                            </td>
+                              })[0].name}
+                          </td>
 
-                            <td>{item.id}</td>
-                            <td className="product-editbut-div-table">
-                              <button
-                                className="btn btn-primary product-morebut"
-                                onClick={() => {
-                                  modalDetailProduct(
-                                    item.id,
-                                    item.name,
-                                    item.description,
-                                    item.partNo,
-                                    item.mfrNo,
-                                    item.datasheetUrl,
-                                    item.mainImage,
-                                    item.smallImage,
-                                    item.cyManufacturerId,
-                                    item.cyCategoryId,
-                                    item.images
-                                  );
-                                  setLgShow(true);
-                                }}
-                              >
-                                ...
-                              </button>
-                              <button
-                                className="btn btn-info product-editbut"
-                                onClick={() => {
-                                  window.scrollTo(0, 0);
-                                  editHandler(
-                                    item.id,
-                                    item.name,
-                                    item.description,
-                                    item.partNo,
-                                    item.mfrNo,
-                                    item.datasheetUrl,
-                                    item.mainImage,
-                                    item.smallImage,
-                                    item.cyManufacturerId,
-                                    item.cyCategoryId,
-                                    item.price,
-                                    item.noOffPrice,
-                                    item.images,
-                                    item.supply,
-                                    item.cyProductCategoryId,
-                                    item.productCode
-                                  );
-                                  //  console.log(item)
-                                }}
-                              >
-                                ویرایش
-                              </button>
-                              <button
-                                className="btn btn-danger product-deletbut"
-                                onClick={() => deleteHandler(item.id)}
-                              >
-                                حذف
-                              </button>
-                            </td>
-                          </tr>
-                        ))
+                          <td>{item.id}</td>
+                          <td className="product-editbut-div-table">
+                            <button
+                              className="btn btn-primary product-morebut"
+                              onClick={() => {
+                                modalDetailProduct(
+                                  item.id,
+                                  item.name,
+                                  item.description,
+                                  item.partNo,
+                                  item.mfrNo,
+                                  item.datasheetUrl,
+                                  item.mainImage,
+                                  item.smallImage,
+                                  item.cyManufacturerId,
+                                  item.cyCategoryId,
+                                  item.images
+                                );
+                                setLgShow(true);
+                              }}
+                            >
+                              ...
+                            </button>
+                            <button
+                              className="btn btn-info product-editbut"
+                              onClick={() => {
+                                window.scrollTo(0, 0);
+                                editHandler(
+                                  item.id,
+                                  item.name,
+                                  item.description,
+                                  item.partNo,
+                                  item.mfrNo,
+                                  item.datasheetUrl,
+                                  item.mainImage,
+                                  item.smallImage,
+                                  item.cyManufacturerId,
+                                  item.cyCategoryId,
+                                  item.price,
+                                  item.noOffPrice,
+                                  item.images,
+                                  item.supply,
+                                  item.cyProductCategoryId,
+                                  item.productCode
+                                );
+                                //  console.log(item)
+                              }}
+                            >
+                              ویرایش
+                            </button>
+                            <button
+                              className="btn btn-danger product-deletbut"
+                              onClick={() => deleteHandler(item.id)}
+                            >
+                              حذف
+                            </button>
+                          </td>
+                        </tr>
+                      ))
                       : tableState &&
                         searchState.itemList?.length != 0 &&
                         !flagSearchNoImg
-                      ? searchState.itemList?.map((item, index) => (
+                        ? searchState.itemList?.map((item, index) => (
                           // {  ../../../../images/No_Image_Available.jpg}
                           <tr key={item.id}>
                             <td>{productNumberPagi + (index + 1)}</td>
@@ -1849,7 +1850,7 @@ export default function Product() {
                             </td>
                           </tr>
                         ))
-                      : flagSearchNoImg &&
+                        : flagSearchNoImg &&
                         productArrayB?.length != 0 &&
                         productArrayB?.map((item, index) => (
                           // {  ../../../../images/No_Image_Available.jpg}
@@ -2000,7 +2001,7 @@ export default function Product() {
                       color="primary"
                       shape="rounded"
                       style={{ direction: "ltr" }}
-                      //  onClick={() => ChangePage(page)}
+                    //  onClick={() => ChangePage(page)}
                     />
                   </div>
                 </>

@@ -29,6 +29,7 @@ import OrderListsB from './components/CmsComponents/OrderOffline/OrderListsB'
 import InquiryList from './components/CmsComponents/OrderOffline/InquiryList'
 import InQueryListB from './components/CmsComponents/OrderOffline/InQueryListB'
 import OrderKarPooshe from './components/CmsComponents/OrderKarPoosheh/OrderKarPooshe'
+import ManagePage from './pages/CmsPages/ManagePage/ManagePage'
 let routes = [
 
     { path: '/', element: <IndexH /> },
@@ -67,6 +68,7 @@ let routes = [
             { path: "PCBLIstB", element: <PCBLIstB /> },
             { path: "InquiryList", element: <InquiryList /> },
             { path: "InQueryListB", element: <InQueryListB /> },
+            { path: "ManagePage", element: <ManagePage /> },
 
         ]
 

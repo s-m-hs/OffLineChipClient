@@ -44,6 +44,8 @@ export default function PcbMyAdding(props) {
     const [ChatguId, setChatguId] = useState("");
     const [getInviteList, setGetInviteList] = useState([])
     const [inviteList, setInviteList] = useState([])
+    const userRole = userDetail?.role;
+
     const faramoj = 1
     const pcb = 2
     const canceled = -1
@@ -429,6 +431,8 @@ export default function PcbMyAdding(props) {
                 <Modal.Header closeButton>
 
                     <div className=' p-1 pcbmyadding-footer-div'>
+
+
                         <div className={(orderStatusEnum == 10 || orderStatusEnum == 20) ? "" : 'disabled '} >
 
                             <div className="orderoff-footer-div ">
@@ -444,14 +448,14 @@ export default function PcbMyAdding(props) {
                         </div>
 
 
-
+                        {/* 
                         <div >
                             <div className="orderoff-footer-div ">
                                 <button className='orderOff-status-btn btn btn-info '> زمان آغاز سفارش :
                                     <DateFormat dateString={orderItems.sendDate} />
                                 </button>
                             </div>
-                        </div>
+                        </div> */}
 
 
 
@@ -513,6 +517,67 @@ export default function PcbMyAdding(props) {
                             />
                             <div className={`orderOffLine-container-div ${isShowMessage ? 'shrink' : ''}`}>
                                 <div className='container text-center'>
+
+
+                                    {/* row 2 */}
+
+
+                                    <table className='table table table-bordered  pcbmyadding-table'>
+
+                                        <tbody>
+                                            <tr key="">
+                                                <td><label>کد پروژه :</label>{orderItems.orderCode}</td>
+                                                <td><label> شماره سفارش :</label>{orderItems.pcbNumber}</td>
+                                                <td><label>درخواست دهنده :</label>{orderItems.creatorName}</td>
+                                                <td> <label>زمان ثبت درخواست :</label><DateFormat dateString={orderItems.orderDate} /></td>
+                                                <td > <label >  وضعیت سفارش :</label>{
+                                                    OrderStatusList.filter(filter => (
+                                                        filter.statusId == orderItems.status
+                                                    ))[0]?.status
+                                                }</td>
+
+                                            </tr>
+
+                                            <tr key="">
+                                                <td><label>تعداد :</label>{orderItems.count}</td>
+                                                <td><label>  قیمت :</label>{orderItems.amount}</td>
+                                                <td><label> قیمت کل :</label>{orderItems.totalAmount}</td>
+                                                <td><label> واحد پول :</label>{
+                                                    Currency.filter(filter => (
+                                                        filter.enumId == orderItems.currency
+                                                    ))[0]?.currency
+                                                }</td>
+
+
+                                                <td ><label>وضعیت(درحال تامین) :</label>{orderItems.inSupplyStatus ? orderItems.inSupplyStatus : '*****'}</td>
+
+                                            </tr>
+
+                                            <tr key="">
+                                                {/* <td colspan="2"><label>توضیحات مشتری :</label>    <textarea
+                                            className='pcbmyadding-comment'
+                                            value={orderItems.creatorComment}
+                                            disabled  ></textarea></td> */}
+
+                                                <td><label> زمان تامین :</label>{orderItems.duration ? orderItems.duration : 0}</td>
+                                                <td colspan="4"><label>توصیحات فروشنده :</label>         <textarea
+                                                    className='pcbmyadding-comment'
+                                                    value={orderItems.commentB}
+                                                    disabled  >
+
+                                                </textarea></td>
+
+                                            </tr>
+
+
+
+
+                                        </tbody>
+
+
+
+                                    </table>
+
 
                                     {/* row 1 */}
 
@@ -607,64 +672,6 @@ export default function PcbMyAdding(props) {
                             </div> */}
 
 
-                                    {/* row 2 */}
-
-
-                                    <table className='table table table-bordered  pcbmyadding-table'>
-
-                                        <tbody>
-                                            <tr key="">
-                                                <td><label>کد پروژه :</label>{orderItems.orderCode}</td>
-                                                <td><label> شماره سفارش :</label>{orderItems.pcbNumber}</td>
-                                                <td><label>درخواست دهنده :</label>{orderItems.creatorName}</td>
-                                                <td> <label>زمان ثبت درخواست :</label><DateFormat dateString={orderItems.orderDate} /></td>
-                                                <td style={{ backgroundColor: "#ffc107" }}> <label >  وضعیت سفارش :</label>{
-                                                    OrderStatusList.filter(filter => (
-                                                        filter.statusId == orderItems.status
-                                                    ))[0]?.status
-                                                }</td>
-
-                                            </tr>
-
-                                            <tr key="">
-                                                <td><label>تعداد :</label>{orderItems.count}</td>
-                                                <td><label>  قیمت :</label>{orderItems.amount}</td>
-                                                <td><label> قیمت کل :</label>{orderItems.totalAmount}</td>
-                                                <td><label> واحد پول :</label>{
-                                                    Currency.filter(filter => (
-                                                        filter.enumId == orderItems.currency
-                                                    ))[0]?.currency
-                                                }</td>
-
-
-                                                <td style={{ backgroundColor: "#ffc107" }}><label>وضعیت(درحال تامین) :</label>{orderItems.inSupplyStatus ? orderItems.inSupplyStatus : '*****'}</td>
-
-                                            </tr>
-
-                                            <tr key="">
-                                                {/* <td colspan="2"><label>توضیحات مشتری :</label>    <textarea
-                                            className='pcbmyadding-comment'
-                                            value={orderItems.creatorComment}
-                                            disabled  ></textarea></td> */}
-
-                                                <td><label> زمان تامین :</label>{orderItems.duration ? orderItems.duration : 0}</td>
-                                                <td colspan="4"><label>توصیحات فروشنده :</label>         <textarea
-                                                    className='pcbmyadding-comment'
-                                                    value={orderItems.commentB}
-                                                    disabled  >
-
-                                                </textarea></td>
-
-                                            </tr>
-
-
-
-
-                                        </tbody>
-
-
-
-                                    </table>
                                     {/* 
 
                             <div className='row pcbmyadding-row-1 mb-3' >

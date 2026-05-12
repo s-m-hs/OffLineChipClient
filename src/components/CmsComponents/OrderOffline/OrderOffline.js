@@ -19,14 +19,15 @@ import {
     Check,
     ArrowArcLeft,
     PlusCircle,
-    Command
+    Command,
+    CurrencyDollar
 
 } from "@phosphor-icons/react";
 import { Link, useLocation } from 'react-router-dom';
 import ApiPostX from '../../../utils/ApiServicesX/ApiPostX';
 import LodingA from '../../../utils/LodingA';
 import AlertQ from '../../../utils/AlertFunc/AlertQ';
-import { Add, ArrowBack, CloseFullscreen, CloseOutlined, Download, ListAlt, ListAltSharp, PlusOne, Refresh, Send } from '@mui/icons-material';
+import { Add, ArrowBack, Close, CloseFullscreen, CloseOutlined, CurrencyYuan, Download, ListAlt, ListAltSharp, PlusOne, Refresh, Send } from '@mui/icons-material';
 import getRowClass from './RowClass';
 import getRowClassB from './RowClassB';
 import { RiArrowDropRightLine } from "react-icons/ri";
@@ -39,6 +40,8 @@ import DownloadFile from '../../../utils/DownloadFile';
 import { List, Tooltip } from '@mui/material';
 import { OrderStatusList, UserType } from '../../../utils/OrderStatusList';
 import ChatPanel from './ChatPanel';
+import { Dollor, Pending, Rial, Yuan } from '../../../utils/Enums';
+import { DepartmentManager } from '../../../utils/Variable';
 
 
 export default function OrderOffline(props) {
@@ -79,6 +82,9 @@ export default function OrderOffline(props) {
     const [ChatguId, setChatguId] = useState("");
     const [getInviteList, setGetInviteList] = useState([])
     const [inviteList, setInviteList] = useState([])
+    const [curency, setCurency] = useState('')
+    const [totalAmaunt, setTotalAmaunt] = useState(0)
+
     const faramoj = 1
     const bom = 1
     const {
@@ -408,20 +414,20 @@ export default function OrderOffline(props) {
 
                     ////////////گرفتن اطلاعات تاییده هر خانه
                     ////////با رویداد موس اینتر مختصات خانه جدول مشخص و به ای پی آی مربوط به تایید یه ان خانه فرستاده میشه
-                    onMouseMove={() => {
-                        if (!appravlDetal?.id) {
-                            setCreatorName(params.data.creatorName)
-                            setAppravlDetal(params?.data?.approvals?.filter(filter => (
-                                filter.isFirst && filter.roleName == role
-                            ))[0])
-                        }
+                    onClick={() => {
+                        console.log(appravlDetal)
+                        console.log(params)
+                        setCreatorName(params.data.creatorName)
+                        setAppravlDetal(params?.data?.approvals?.filter(filter => (
+                            filter.isFirst && filter.roleName == role
+                        ))[0])
                     }
 
                     }
 
-                    onMouseLeave={() => {
-                        setAppravlDetal([])
-                    }}
+                // onMouseLeave={() => {
+                //     setAppravlDetal([])
+                // }}
                 >
                     <div style={{
                         height: '40px',        // ✅ fixed height
@@ -475,20 +481,18 @@ export default function OrderOffline(props) {
             <>
                 <div className='centercc'                      ////////////گرفتن اطلاعات تاییده هر خانه
                     ////////با رویداد موس اینتر مختصات خانه جدول مشخص و به ای پی آی مربوط به تایید یه ان خانه فرستاده میشه
-                    onMouseMove={() => {
+                    onClick={() => {
 
-                        if (!appravlDetal?.id) {
-                            setCreatorName(params.data.creatorName)
-                            setAppravlDetal(params?.data?.approvals?.filter(filter => (
-                                !filter.isFirst && filter.roleName == role
-                            ))[0])
-                        }
+                        setCreatorName(params.data.creatorName)
+                        setAppravlDetal(params?.data?.approvals?.filter(filter => (
+                            !filter.isFirst && filter.roleName == role
+                        ))[0])
 
                     }
                     }
-                    onMouseLeave={() => {
-                        setAppravlDetal([])
-                    }}
+                // onMouseLeave={() => {
+                //     setAppravlDetal([])
+                // }}
                 >
                     <div style={{
                         height: '40px',        // ✅ fixed height
@@ -555,7 +559,6 @@ export default function OrderOffline(props) {
                     className='btn btn-light '
                     style={{ width: "60px", height: "30px", fontSize: "20px", padding: "1px", margin: '1px' }}
                     onClick={() => {
-                        // console.log(params)
                         setLoadingFlag(true)
                         getOrderDetail(params.data.id)
                         setOrderId(params.data.id)
@@ -564,6 +567,9 @@ export default function OrderOffline(props) {
                         setStartOrderDate(params.data.startOrderDate)
                         // getMessageA(params.data.id)
                         getMentionListS(params.data.id)
+                        setCurency(params.data.curency)
+                        setTotalAmaunt(params.data.totalAmount)
+                        console.log(params)
                     }}
                 >
                     <Eye />
@@ -646,7 +652,7 @@ export default function OrderOffline(props) {
             field: 'totalPrice', headerName: "قیمت مجموع",
             width: 150,      // ✅ fixed کوچکتر
             minWidth: 150,
-            maxWidth: 150,
+            maxWidth: 300,
         },
         {
             field: 'lastModified', headerName: "زمان آغاز سفارش",
@@ -893,12 +899,21 @@ export default function OrderOffline(props) {
 
         ApiGetX2(`/api/CyOrdersB/orderItemsOk?OrderId=${orderId}`, func)///اول ثبت استیت  levelOk
     }
+
+    ///ابتدا در این تابع چک میکنیم که اگر سمت کاربر مدیرواحد باشد ابتدا سقف مجاز ارز بررسی شود
+    const isAllowDepartment = () => {
+        if (userDetail.role == DepartmentManager) {
+            ApiGetX3(`/api/CyOrdersB/isAllowToDepartment?orderId=${orderId}`, handleSave, (res) => AlertError(res))
+        } else {
+            handleSave()
+        }
+
+    }
+
     // بقیه توابع بدون تغییر...
     const handleSave = () => {
-        // AlertQ("آیا از تایید فرایند سفارش اطمینان دارید ؟", "تایید لغو شد", ChangeOrderStatus)
         setToNextState(true)
         const funcjj = (result) => {
-            // setOrderItemS(result)
             setFalsApprovals(result.filter(orderItem =>
                 orderItem.approvals?.some(approval =>
                     approval.roleName == userRole &&
@@ -1055,18 +1070,6 @@ export default function OrderOffline(props) {
     ]);
 
 
-    // const orderStatusList = [
-    //     { id: 1, status: "ثبت سفارش", statusId: 10 },
-    //     { id: 2, status: "در حال استعلام گیری", statusId: 15 },
-    //     { id: 3, status: "در انتظار تایید مشتری", statusId: 20 },
-    //     { id: 4, status: "در صف خرید", statusId: 25 },
-    //     { id: 5, status: "در حال تامین", statusId: 30 },
-    //     { id: 6, status: "خاتمه یافته", statusId: 40 },
-    //     { id: 6, status: "", statusId: 45 },
-    //     { id: 7, status: "تحویل داده شده", statusId: 50 },
-    //     { id: 8, status: "لغو شده", statusId: -1 },
-    // ]
-
     const getMessageA = (id, type) => {
         ApiGetX2(`/api/CyOrderMessage/GetMessagesByOrderID?OrderID=${id}&type=${type}`, setAllMessageA)
     }
@@ -1119,13 +1122,13 @@ export default function OrderOffline(props) {
     }, [orderDetails, orderItemS])
 
 
-    useEffect(() => {
-        if (appravlDetal?.id) {
-            setTimeout(() => {
-                setAppravlDetal([])
-            }, 4000);
-        }
-    }, [appravlDetal])
+    // useEffect(() => {
+    //     if (appravlDetal?.id) {
+    //         setTimeout(() => {
+    //             setAppravlDetal([])
+    //         }, 4000);
+    //     }
+    // }, [appravlDetal])
 
     useEffect(() => {
         getAllOrder()
@@ -1174,7 +1177,31 @@ export default function OrderOffline(props) {
                     closeButton
                 >
                     <div className="orderoff-footer-div ">
-                        <button className='btn btn-success disabled'>سمت : {userRole} ___ <span>تأیید شده: {approvalsList?.filter(a => a.isApproved).length}/{approvalsList?.length}</span>___
+                        <table className='table table-bordered table-info orderOff-table' >
+                            <thead>
+                                <tr key="">
+                                    <th>سمت</th>
+                                    <th>شماره سفارش</th>
+                                    <th>وضعیت سفارش</th>
+                                    <th>زمان آغاز سفارش </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr key="">
+
+                                    <td>{userRole}</td>
+                                    <td>{orderDetails.orderCode}</td>
+                                    <td> {orderStatus}</td>
+                                    <td><DateFormat dateString={startOrderDate} /></td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+
+                        {/* <button className='btn btn-success disabled'>سمت : {userRole} ___ <span>تأیید شده: {approvalsList?.filter(a => a.isApproved).length}/{approvalsList?.length}</span>___
 
                             <span> کد سفارش: {orderDetails.orderCode}</span></button>
 
@@ -1182,11 +1209,11 @@ export default function OrderOffline(props) {
 
                         <button className='orderOff-status-btn btn btn-info '> زمان آغاز سفارش :<DateFormat dateString={startOrderDate} /></button>
 
-                        <button className='orderOff-status-btn btn btn-warning '>وضعیت سفارش :{orderStatus}</button>
+                        <button className='orderOff-status-btn btn btn-warning '>وضعیت سفارش :{orderStatus}</button> */}
 
                         {((userDetail.role == "DepartmentManager" || userDetail.role == "GeneralManager") && (orderStatusEnum == 10 || orderStatusEnum == 20)) &&
                             <button type='button'
-                                onClick={handleSave} className="btn btn-success">
+                                onClick={isAllowDepartment} className="btn btn-success">
                                 <span>تغییر به :</span>
                                 <ArrowBack size={40} style={{ color: '#f80606', margin: '2px' }} />
                                 <span>{orderNextStatus}</span>
@@ -1268,6 +1295,26 @@ export default function OrderOffline(props) {
                                             setShowB(true)
                                         }}><MagnifyingGlass size={30} /></button>
                                     </>}
+
+                                    {orderStatusEnum != Pending &&
+                                        <div className='centerrc disabled curency-div-btn' >
+
+                                            <button type='button' className={curency == Dollor ? 'btn btn-success m-1 btn-lg' : 'btn btn-outline-success m-1'}
+
+                                            ><CurrencyDollar style={{ fontSize: "25px" }} /></button>
+                                            <button className={curency == Yuan ? 'btn btn-primary m-1 btn-lg' : 'btn btn-outline-primary m-1'}
+
+                                            ><CurrencyYuan /></button>
+                                            <button className={curency == Rial ? 'btn btn-info m-1 btn-lg'
+                                                : 'btn btn-outline-info m-1'
+                                            }
+                                            ><span style={{ fontSize: "18px" }}>Rial</span></button>
+                                            <button style={{ minWidth: '300px', }} className='btn btn-outline-warning disabled btn-lg'>
+                                                {totalAmaunt.toLocaleString()}
+                                                <span style={{ fontSize: "15px", fontWeight: "600" }}> : مبلغ سفارش </span>
+                                            </button>
+                                        </div>}
+
 
 
                                 </div>
@@ -1481,14 +1528,17 @@ export default function OrderOffline(props) {
             </Modal>
 
 
-            {appravlDetal?.length != 0 && <div style={{ position: 'fixed', left: '10px', top: 0, zIndex: 100000, padding: '10px', backgroundColor: '#222020', border: '1px solid #ccc', borderRadius: '8px', width: '300px', color: "#fff", fontSize: '15px' }}>
-                <p className='tooltip-p'><h6>تایید کننده:  </h6> {appravlDetal?.userName}</p>
-                <p className='tooltip-p'><h6>زمان آخرین تغییر:  </h6><DateFormat dateString={appravlDetal?.actionTime}></DateFormat> </p>
-                <hr />
-                <p className='tooltip-p'><h6>ایجادکننده:  </h6> {creatorName}</p>
-                <p className='tooltip-p'><h6>سمت ایجادکننده:  </h6> {appravlDetal?.roleName}</p>
-                <p className='tooltip-p'><h6>زمان ایجاد:  </h6><DateFormat dateString={appravlDetal?.createDate}></DateFormat> </p>
-            </div>}
+            {appravlDetal?.length != 0 &&
+
+                <div style={{ position: 'fixed', left: '10px', top: 0, zIndex: 100000, padding: '10px', backgroundColor: '#222020', border: '1px solid #ccc', borderRadius: '8px', width: '300px', color: "#fff", fontSize: '15px' }}>
+                    <span onClick={() => setAppravlDetal([])}><Close style={{ color: "#ffff", cursor: "pointer" }} /></span>
+                    <p className='tooltip-p'><h6>تایید کننده:  </h6> {appravlDetal?.userName}</p>
+                    <p className='tooltip-p'><h6>زمان آخرین تغییر:  </h6><DateFormat dateString={appravlDetal?.actionTime}></DateFormat> </p>
+                    <p className='tooltip-p'><h6>سمت تاییدکننده:  </h6> {appravlDetal?.userName && appravlDetal?.roleName}</p>
+                    <hr />
+                    <p className='tooltip-p'><h6>ایجادکننده:  </h6> {creatorName}</p>
+                    <p className='tooltip-p'><h6>زمان ایجاد:  </h6><DateFormat dateString={appravlDetal?.createDate}></DateFormat> </p>
+                </div>}
 
             {searchProductDetail?.length != 0 && <div style={{ position: 'fixed', left: '10px', top: 0, zIndex: 100000, padding: '10px', backgroundColor: '#222020', border: '1px solid #ccc', borderRadius: '8px', width: '450px', color: "#fff", fontSize: '15px' }}>
                 <span style={{ cursor: 'pointer' }} onClick={() => setSearchProductDetail([])}>                <CloseOutlined style={{ color: "#fff" }} />

@@ -25,6 +25,7 @@ import ApiPutX from "../../../utils/ApiServicesX/ApiPutX";
 import alertC from "../../../utils/AlertFunc/AlertC";
 import ApiGetX from "../../../utils/ApiServicesX/ApiGetX";
 import ApiDeleteX from "../../../utils/ApiServicesX/ApiDeleteX";
+import { Refresh } from "@mui/icons-material";
 // import TextEditorDark from "../../Editor/TextEditorDark";
 // import DarkEditor from "../DarkEditor/DarkEditor";
 // import DarkEditor from '../DarkEditor/DarkEditor'
@@ -90,12 +91,12 @@ export default function ParameterCom() {
   //   setCkValue(draftToHtml(convertToRaw(editorState.getCurrentContent())));
   // };
   ///////////////////////////////
-  const handleError = (errors) => {};
+  const handleError = (errors) => { };
 
   /////////////////////////////////
 
   const funcC = () => {
-    alertC("متغییر با موفقیت ویرایش شد", function funcD() {
+    alertC("ارز با موفقیت ویرایش شد", function funcD() {
       reset(setValue(""));
       setFlagUpdate(false);
       getKeyItem();
@@ -125,9 +126,8 @@ export default function ParameterCom() {
     } else if (flagUpdate) {
       let obj = {
         id: putId,
-        key: data.update.key,
-        tag: data.update.tag,
-        value: ckValue,
+        value: data.update.value,
+        doubleValue: Number(data.update.doubleValue),
       };
       ApiPutX("/api/CyKeyDatas", putId, obj, funcC);
     }
@@ -150,16 +150,9 @@ export default function ParameterCom() {
   };
   /////////////////////
   const editHandler = (...data) => {
-    let html = data[3];
-    let contentBlock = htmlToDraft(html);
-    let contentState = ContentState.createFromBlockArray(
-      contentBlock.contentBlocks
-    );
-    // setEditorState(EditorState.createWithContent(contentState));
     setPutId(data[0]);
     setFlagUpdate(true);
-    setCkValue(data[3]);
-    setValue("update", { key: data[1], tag: data[2] });
+    setValue("update", { value: data[1], doubleValue: data[2] });
   };
   /////////////////
   const resetUpdatField = () => {
@@ -197,7 +190,7 @@ export default function ParameterCom() {
               action=""
               onSubmit={handleSubmit(handleRegistration, handleError)}
             >
-              <div className="login-label-float">
+              {/* <div className="login-label-float">
                 <input
                   name="key"
                   type="text"
@@ -223,96 +216,35 @@ export default function ParameterCom() {
                   )}
                 />
                 <label> عنوان</label>
+              </div> */}
+
+
+              <div className="login-label-float ">
+                <input
+                  type="text"
+                  placeholder=""
+                  {...register("update.value",)}
+                />
+                <label> عنوان</label>
               </div>
 
-              <div className=" parametercom-editor-div">
-                {/* <label>محتوا</label> */}
-                <Switch
-                  checked={checked}
-                  onChange={handleChange}
-                  inputProps={{ "aria-label": "controlled" }}
-                />{" "}
-                <span
-                  className={
-                    !checked
-                      ? "parametercom-switch-span"
-                      : "parametercom-switch-span-editor"
-                  }
-                >
-                  Text Editor
-                </span>
-                {/* <form>
-              <input type="radio" id="option1" name="group1" value="Option1" 
-              onChange={(e)=>changeRadio(e)}/>
-<label for="option1"> Text Editor</label>
-
-<input type="radio" id="option2" name="group1" value="Option2"
- onChange={(e)=>changeRadio(e)}
-/>
-<label for="option2">Text</label>
-
-
-                </form> */}
-                {
-                  !checked ? (
-                    <div className="login-label-float parametercom-text-content">
-                      <input
-                        onChange={(e) => changeSwich(e)}
-                        value={ckValue}
-                        type="text"
-                        placeholder=""
-                      />
-                      <label> محتوا</label>
-                    </div>
-                  ) : (
-                    <TextEditor
-                      isDark={isDarkMode}
-                      value={ckValue}
-                      onChange={handleEditorChange}
-                      height="300px"
-                    />
-                  )
-
-                  //   homeContext.themContext ? <TextEditor value={ckValue} onChange={handleEditorChange}/>
-                  // :
-                  // !homeContext.themContext ? <TextEditorDark value={ckValue} onChange={handleEditorChange}/>
-                  //  :
-                  // ''
-                }
-                {/* <Editor
-                  toolbar={{
-                    fontFamily: {
-                      options: [
-                        "Arial",
-                        "Georgia",
-                        "Impact",
-                        "Tahoma",
-                        "Times New Roman",
-                        "Verdana",
-                        "Yekan",
-                      ],
-                      className: undefined,
-                      component: undefined,
-                      dropdownClassName: undefined,
-                    },
-                  }}
-                  editorState={editorState}
-                  wrapperClassName="demo-wrapper"
-                  editorClassName="demo-editor"
-                  onEditorStateChange={onEditorStateChange}
-
-                  //   handleDroppedFiles={handleDroppedFiles}
-                  //   blockRendererFn={blockRendererFn}
-                /> */}
+              <div className="login-label-float ">
+                <input
+                  type="number"
+                  placeholder=""
+                  {...register("update.doubleValue")}
+                />
+                <label> سقف ارز</label>
               </div>
+
+
+
 
               {flagUpdate && (
                 <div className="parametercom-resticon">
-                  <i
-                    className="fa-solid fa-rotate-left fa-2xl"
-                    style={{ color: " #74C0FC" }}
-                    onClick={resetUpdatField}
-                  ></i>
+                  <span
+                    onClick={resetUpdatField}><Refresh style={{ color: " #74C0FC" }} /></span>
+
                 </div>
               )}
 
@@ -323,7 +255,7 @@ export default function ParameterCom() {
                 color="info"
                 endIcon={<SendIcon />}
               >
-                {!flagUpdate ? <span> افزودن </span> : <span> ویرایش </span>}
+                <span> ویرایش </span>
               </Button>
             </form>
           </div>
@@ -339,7 +271,7 @@ export default function ParameterCom() {
                 />
               </div>
             ) : (
-              <DataTable title={"لیست متغیرها :"}>
+              <DataTable title={"لیست ارزها :"}>
                 <table
                   className={
                     !homeContext.themContext
@@ -350,48 +282,39 @@ export default function ParameterCom() {
                   <thead>
                     <tr>
                       <th>شماره</th>
-                      <th>کلیدواژه </th>
                       <th>عنوان </th>
-                      <th>محتوا</th>
-                      <th>شناسه</th>
-                      <th>ویرایش/حذف</th>
+                      <th>سقف ارز</th>
+                      <th>ویرایش</th>
                     </tr>
                   </thead>
                   <tbody>
                     {keyArrayBRevers.map((item, index) => (
                       <tr key={item.id}>
                         <td>{index + 1}</td>
-                        <td>{item.key}</td>
-                        <td>{item.tag}</td>
-                        <td
-                          dangerouslySetInnerHTML={{ __html: item.value }}
-                        ></td>
-                        {/* <td >{item.value}</td> */}
-
-                        <td>{item.id}</td>
+                        <td>{item.value}</td>
+                        <td>{item.doubleValue.toLocaleString()}</td>
                         <td>
                           <button
                             className="btn btn-info parametercom-editbut"
                             onClick={() => {
                               editHandler(
                                 item.id,
-                                item.key,
-                                item.tag,
-                                item.value
+                                item.value,
+                                item.doubleValue,
                               );
                               window.scrollTo(0, 0);
                             }}
                           >
                             ویرایش
                           </button>
-                          <button
+                          {/* <button
                             className="btn btn-danger parametercom-deletbut"
                             onClick={() => {
                               deleteHandler(item.id);
                             }}
                           >
                             حذف
-                          </button>
+                          </button> */}
                         </td>
                       </tr>
                     ))}
