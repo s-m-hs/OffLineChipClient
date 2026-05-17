@@ -97,7 +97,6 @@ export default function PcbMyAddingB(props) {
     };
     // هایلایت کردن ردیف مربوط به GUID
     useEffect(() => {
-        console.log('first')
         if (guid && gridRefB.current) {
             setLoadingFlag(true)
             setTimeout(() => {
@@ -135,7 +134,6 @@ export default function PcbMyAddingB(props) {
                         style={{ width: "60px", height: "30px", fontSize: "20px", padding: "1px", margin: '1px' }}
                         type='button'
                         onClick={() => {
-                            console.log(params)
                             setOrderId(params.data.id)
                             getOrderDetails(params.data.id)
                             setOrderStatusEnum(params.data.status)
@@ -358,7 +356,6 @@ export default function PcbMyAddingB(props) {
 
     ////تغییر استتیت در وضعیت درحل تامین
     const changInSuplyStte = () => {
-        console.log(inSupplyState)
         ApiGetX2(`/api/CyPCB/updateOrderItemSupplyStatus?state=${inSupplyState}&orderId=${orderId}`, alert)
 
     }
@@ -477,7 +474,7 @@ export default function PcbMyAddingB(props) {
 
                                     {/* row 2 */}
 
-                                    <table className='table table table-bordered   pcbmyadding-table'>
+                                    <table className='table table table-bordered table-info  pcbmyadding-table'>
 
                                         <tbody>
                                             <tr key="">

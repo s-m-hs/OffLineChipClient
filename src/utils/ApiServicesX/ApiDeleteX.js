@@ -30,7 +30,6 @@ const ApiDeleteX = (url, putId, func) => {
             },
           })
             .then((res) => {
-              console.log(res);
             })
             .then((result) => {
               swalWithBootstrapButtons

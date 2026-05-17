@@ -12,7 +12,6 @@ const ApiPost = (url, obj, alert, ...fun) => {
       body: JSON.stringify(obj),
     })
       .then((res) => {
-        // console.log(res)
         if (res.ok) {
           alert();
           fun([0]);

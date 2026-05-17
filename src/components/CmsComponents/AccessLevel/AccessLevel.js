@@ -57,20 +57,10 @@ export default function AccessLevel() {
         { field: 'allowUploudWarehouse', headerName: '15', valueFormatter: (p) => (p.value ? 'بله' : 'خیر') },
         { field: 'allowAccessPurchasePanel', headerName: '16', valueFormatter: (p) => (p.value ? 'بله' : 'خیر') },
         { field: 'allowAccessUsersPanel', headerName: '17', valueFormatter: (p) => (p.value ? 'بله' : 'خیر') },
-        // {
-        //     headerName: 'عملیات', maxWidth: 200,
-        //     cellRenderer: (params) => (
-        //         <>
-        //             <button className='btn btn-info' style={{ width: "30px", height: "15px", margin: "1px", fontSize: "8px", padding: "1px" }} onClick={() => console.log(params)}>+</button>
-        //             <button className='btn btn-danger' style={{ width: "30px", height: "15px", margin: "1px", fontSize: "8px", padding: "1px" }} onClick={() => deleteHandler(params.data.id)}>×</button>
-        //         </>
-        //     )
-        // }
 
     ];
 
     const handleRegistration = (data) => {
-        console.log(data)
         async function myApp() {
             const res = await fetch(`${apiUrl}/api/CyAcces/addAccess`, {
                 method: "POST",
@@ -80,7 +70,6 @@ export default function AccessLevel() {
                 },
                 body: JSON.stringify(data)
             }).then(res => {
-                console.log(res)
                 if (res.ok) {
                     alertA("دسترسی جدید ایجاد شد ")
                     getAccess()

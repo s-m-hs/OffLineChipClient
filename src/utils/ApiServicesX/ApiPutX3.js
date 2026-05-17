@@ -11,7 +11,6 @@ const ApiPutX3 = (url, id, func) => {
       },
     })
       .then((res) => {
-        // console.log(res)
         if (res.ok) {
           func();
         }

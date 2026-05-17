@@ -119,10 +119,8 @@ export default function Product() {
   });
 
   const handleError = (errors) => {
-    // console.log(errors)
   };
   const handleErrorB = (errors) => {
-    // console.log(errors)
   };
 
   const registerOptions = {
@@ -232,7 +230,6 @@ export default function Product() {
     formData.append("Name", "");
     formData.append("Description", "");
     formData.append("IsPrivate", true);
-    // console.log(formData.get('File'));
     async function myAppPostFile() {
       const res = await fetch(`${apiUrl}/api/CyFiles/upload`, {
         method: "POST",
@@ -254,7 +251,6 @@ export default function Product() {
           }
         })
         .then((result) => {
-          // console.log(result);
           if (result) {
             setGuId(result.id);
             // classRefC.current.classList.remove("order-hide");
@@ -344,7 +340,6 @@ export default function Product() {
         body: JSON.stringify(obj),
       })
         .then((res) => {
-          // console.log(res)
           if (res.ok) {
             Swal.fire({
               position: "center",
@@ -423,7 +418,6 @@ export default function Product() {
     myApp();
   };
   const handleRegistrationC = (data) => {
-    // console.log(data)
     let obj = {
       property: Number(data.radio),
       pageNumber: 0,
@@ -434,7 +428,6 @@ export default function Product() {
   };
 
   const handleRegistrationB = (data) => {
-    // console.log(data)
     setSearchState([]);
     setPage(1);
     setTableState(true);
@@ -452,10 +445,8 @@ export default function Product() {
     };
     setSearchObj(obj);
     setSearchItem(obj);
-    // console.log(obj)
   };
   const handleRegistration = (data) => {
-    // console.log(data)
     let obj2 = paramiterArray.map((item) => ({
       id: 0,
       name: item.names,
@@ -773,7 +764,6 @@ export default function Product() {
     });
     setCteArray((prev) => [...prev, data[9], data[14], data[8]]);
     setImageArray(data[12]?.split("*,*"));
-    // console.log(data[12])
   };
   /////////////////////////
   const modalDetailProduct = (...data) => {
@@ -1722,7 +1712,6 @@ export default function Product() {
                                   item.cyProductCategoryId,
                                   item.productCode
                                 );
-                                //  console.log(item)
                               }}
                             >
                               ویرایش
@@ -1836,7 +1825,6 @@ export default function Product() {
                                     item.cyProductCategoryId,
                                     item.productCode
                                   );
-                                  //  console.log(item)
                                 }}
                               >
                                 ویرایش
@@ -1949,7 +1937,6 @@ export default function Product() {
                                     item.cyProductCategoryId,
                                     item.productCode
                                   );
-                                  //  console.log(item)
                                 }}
                               >
                                 ویرایش

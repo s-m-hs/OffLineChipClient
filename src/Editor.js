@@ -19,7 +19,6 @@ class Editor extends Component {
 
   handleChange(html) {
     this.setState({ editorHtml: html });
-    // console.log(html);
   }
 
   render() {
@@ -52,9 +51,9 @@ Editor.modules = {
       { indent: '-1' },
       { indent: '+1' }
     ],
-    ['link', 
+    ['link',
       'image',
-       'video'],
+      'video'],
     ['clean']
   ],
   clipboard: {

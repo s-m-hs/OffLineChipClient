@@ -16,4 +16,11 @@ export const Rial = 2
 export const Dollor = 3
 
 
+export const Gerber = 1
+export const StackLayer = 2
+export const MI = 3
+export const PickAndPlace = 4
+export const BOM = 5
+
+
 

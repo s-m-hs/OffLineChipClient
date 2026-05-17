@@ -51,7 +51,7 @@ export default function Vahed() {
             headerName: 'عملیات', maxWidth: 200,
             cellRenderer: (params) => (
                 <>
-                    {/* <button className='btn btn-info' style={{ width: "30px", height: "15px", margin: "1px", fontSize: "8px", padding: "1px" }} onClick={() => console.log(params)}>+</button> */}
+
                     <button className='btn btn-danger' style={{ width: "30px", height: "15px", margin: "1px", fontSize: "8px", padding: "1px" }} onClick={() => deleteHandler(params.data.id)}>×</button>
                 </>
             )

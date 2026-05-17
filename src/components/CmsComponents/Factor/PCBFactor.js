@@ -15,6 +15,8 @@ import ChangeUplodeC from '../../../utils/ChangeUplodeC';
 import ApiPostX0 from '../../../utils/ApiServicesX/ApiPostX0';
 import routes from '../../../routes';
 import { useNavigate, useRoutes } from 'react-router-dom';
+import ChangeUplodeD from '../../../utils/ChangeUplodeD';
+import { BOM, Gerber, MI, PickAndPlace, StackLayer } from '../../../utils/Enums';
 export default function PCBFactor() {
     const cmsContext = useContext(CmsContext);
     const homeContext = useContext(HomeContext);
@@ -120,69 +122,81 @@ export default function PCBFactor() {
         }
         ApiPostX0(`/api/CyPCB/addPcbFile`, obj, getidFromApi)
     }
+
+    ////Gerber
     useEffect(() => {
 
-        const enumId = 1;
         const funcB = (id) => {
             setGuIdA(id);
-            addPcbFile(id, enumId)
+            addPcbFile(id, Gerber)
         };
         if (getValues("Gerber")) {
-            ChangeUplodeC(getValues("Gerber"), funcB);
-            // changeUplode();
+            ChangeUplodeD(getValues("Gerber"), funcB, {
+                allowedExtensions: ['rar', 'zip'],
+                onError: (error) => { setLoadingFlag(false) }
+            });
         }
     }, [getValues("Gerber")]);
 
+    ///StackLayer
     useEffect(() => {
-        const enumId = 2;
         const funcB = (id) => {
             setGuIdB(id);
-            addPcbFile(id, enumId)
+            addPcbFile(id, StackLayer)
         };
         if (getValues("StackLayer")) {
-            ChangeUplodeC(getValues("StackLayer"), funcB);
-            // changeUplode();
+            ChangeUplodeD(getValues("StackLayer"), funcB, {
+                allowedExtensions: ['jpg', 'jpeg', 'png', 'gif', 'webp'],
+                onError: (error) => { setLoadingFlag(false) }
+            });
         }
 
 
     }, [getValues("StackLayer")])
 
+    ///MI
     useEffect(() => {
-        const enumId = 3;
         const funcB = (id) => {
             setGuIdC(id);
-            addPcbFile(id, enumId)
+            addPcbFile(id, MI)
         };
         if (getValues("MI")) {
-            ChangeUplodeC(getValues("MI"), funcB);
+            ChangeUplodeD(getValues("MI"), funcB, {
+                allowedExtensions: ['pdf'],
+                onError: (error) => { setLoadingFlag(false) }
+            });
         }
 
 
     }, [(getValues("MI"))])
 
+    ///PickAndPlace
     useEffect(() => {
-        const enumId = 4;
         const funcB = (id) => {
             setGuIdD(id);
-            addPcbFile(id, enumId)
+            addPcbFile(id, PickAndPlace)
         };
         if (getValues("PickAndPlace")) {
-            ChangeUplodeC(getValues("PickAndPlace"), funcB);
-            // changeUplode();
+            ChangeUplodeD(getValues("PickAndPlace"), funcB, {
+                allowedExtensions: ['xls', 'xlsx', 'csv'],
+                onError: (error) => { setLoadingFlag(false) }
+            });
         }
 
 
     }, [getValues("PickAndPlace")])
 
+    ///BOM
     useEffect(() => {
-        const enumId = 5;
         const funcB = (id) => {
             setGuIdE(id);
-            addPcbFile(id, enumId)
+            addPcbFile(id, BOM)
         };
         if (getValues("BOM")) {
-            ChangeUplodeC(getValues("BOM"), funcB);
-            // changeUplode();
+            ChangeUplodeD(getValues("BOM"), funcB, {
+                allowedExtensions: ['xls', 'xlsx', 'csv'],
+                onError: (error) => { setLoadingFlag(false) }
+            });
         }
 
 
@@ -300,14 +314,7 @@ export default function PCBFactor() {
             </div>
 
             <div className="pcbForm-middle-div boxSh container">
-                {/* <button onClick={() => {
-                    console.log(getValues('Gerber'))
-                    console.log(getValues('StackLayer'))
-                    console.log(getValues('MI'))
-                    console.log(getValues('PickAndPlace'))
-                    console.log(getValues('BOM'))
 
-                }}>====</button> */}
                 <div className='row m-1'>
                     <div className='col-4 OrderOfflineB-exel-div centercc'>
                         <span>	Gerber</span>

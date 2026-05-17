@@ -40,7 +40,7 @@ import DownloadFile from '../../../utils/DownloadFile';
 import { List, Tooltip } from '@mui/material';
 import { OrderStatusList, UserType } from '../../../utils/OrderStatusList';
 import ChatPanel from './ChatPanel';
-import { Dollor, Pending, Rial, Yuan } from '../../../utils/Enums';
+import { Canceled, Dollor, Pending, Rial, Yuan } from '../../../utils/Enums';
 import { DepartmentManager } from '../../../utils/Variable';
 
 
@@ -415,8 +415,6 @@ export default function OrderOffline(props) {
                     ////////////گرفتن اطلاعات تاییده هر خانه
                     ////////با رویداد موس اینتر مختصات خانه جدول مشخص و به ای پی آی مربوط به تایید یه ان خانه فرستاده میشه
                     onClick={() => {
-                        console.log(appravlDetal)
-                        console.log(params)
                         setCreatorName(params.data.creatorName)
                         setAppravlDetal(params?.data?.approvals?.filter(filter => (
                             filter.isFirst && filter.roleName == role
@@ -569,7 +567,6 @@ export default function OrderOffline(props) {
                         getMentionListS(params.data.id)
                         setCurency(params.data.curency)
                         setTotalAmaunt(params.data.totalAmount)
-                        console.log(params)
                     }}
                 >
                     <Eye />
@@ -1111,13 +1108,20 @@ export default function OrderOffline(props) {
     }, [orderItemS])
 
     useEffect(() => {
-        if (orderItemS?.length > 0 && (orderStatusEnum == 10 || orderStatusEnum == 20)) {
+        if (orderItemS?.length > 0 && orderStatusEnum != Canceled
+            // && (orderStatusEnum == 10 || orderStatusEnum == 20)
+        ) {
             setOrderStatus(OrderStatusList?.filter(filter => (
                 filter.statusId == orderDetails.orderStatus
             ))[0].status)
             setOrderNextStatus(OrderStatusList?.filter(filter => (
                 filter?.statusId == (orderDetails?.orderStatus + 5)
             ))[0].status)
+        } else if (orderItemS?.length > 0 && orderStatusEnum == Canceled) {
+            setOrderStatus(OrderStatusList?.filter(filter => (
+                filter.statusId == orderDetails.orderStatus
+            ))[0].status)
+
         }
     }, [orderDetails, orderItemS])
 
@@ -1177,7 +1181,7 @@ export default function OrderOffline(props) {
                     closeButton
                 >
                     <div className="orderoff-footer-div ">
-                        <table className='table table-bordered table-info orderOff-table' >
+                        <table className='table table-bordered table-dark orderOff-table' >
                             <thead>
                                 <tr key="">
                                     <th>سمت</th>

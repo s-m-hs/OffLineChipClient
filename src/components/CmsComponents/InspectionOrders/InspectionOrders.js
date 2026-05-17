@@ -72,7 +72,6 @@ export default function InspectionOrders() {
 
   const changHandler = (e) => {
     setStatusText(e.target.value);
-    // console.log(e.target.value)
   };
   const changeSMSbox = (e) => {
     setIsChecked(e.target.checked);
@@ -135,7 +134,6 @@ export default function InspectionOrders() {
         }
       )
         .then((res) => {
-          console.log(res);
         })
         .catch((err) => console.log(err));
     }
@@ -228,7 +226,6 @@ export default function InspectionOrders() {
           }
         })
         .then((result) => {
-          console.log(result);
         })
         .catch((err) => console.log(err));
     }
@@ -438,7 +435,7 @@ export default function InspectionOrders() {
                       type="checkbox"
                       checked={isChecked}
                       onChange={changeSMSbox}
-                      // onChange={}
+                    // onChange={}
                     />
                     {/* <i class="fa-solid fa-comment-sms fa-lg" style= {{color:'#74C0FC'}}></i> */}
                   </div>

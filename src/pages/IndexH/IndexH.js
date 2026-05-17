@@ -27,8 +27,7 @@ export default function IndexH() {
     defaultValues: {},
   });
   const handleError = (errors) => {
-    // console.log(errors)
-    // alert(errors)
+
   };
   const registerOptions = {
     userName: { required: "نام کاربری نادرست است" },
@@ -98,7 +97,6 @@ export default function IndexH() {
     }
     myAppPost();
   };
-  // console.log(errors.password);
   const button1 = () => {
     setFlag(true);
   };
@@ -164,8 +162,8 @@ export default function IndexH() {
                 <button className="btn btn-primary  buttonss">
                   <div className="spinner-div">
                     {flagSpinner &&
-                    errors.password == undefined &&
-                    errors.userName == undefined ? (
+                      errors.password == undefined &&
+                      errors.userName == undefined ? (
                       <ClockLoader
                         className="spinner"
                         size={30}

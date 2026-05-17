@@ -18,7 +18,6 @@ export default function Email() {
         },
       })
         .then((res) => {
-          // console.log(res)
           if (res.status == 200) {
             setFlag(true);
             return res.blob();

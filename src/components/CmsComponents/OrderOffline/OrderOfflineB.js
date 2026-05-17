@@ -139,9 +139,7 @@ export default function OrderOfflineB(props) {
 
 
     const checkboxCellRenderer = useCallback((params) => {
-        // console.log(params.data.levelOk)
         const field = params.colDef.field;
-        // console.log(params)
         const role = field;
         const isEditable = userRole === role;
         const value = params.value ?? false;
@@ -170,7 +168,6 @@ export default function OrderOfflineB(props) {
                 ////////با رویداد موس اینتر مختصات خانه جدول مشخص و به ای پی آی مربوط به تایید یه ان خانه فرستاده میشه 
                 onMouseMove={() => {
 
-                    // console.log(appravlDetal)
                     setCreatorName(params.data.creatorName)
                     // setCellState(params.data.id)
                     // setCellStateB(params.column.colId)
@@ -268,7 +265,6 @@ export default function OrderOfflineB(props) {
                             setStartOrderDate(params.data.startOrderDate)
                             setCurency(params.data.curency)
                             setTotalAmaunt(params.data.totalAmount)
-                            console.log(params)
 
                         }}
                     >
@@ -279,7 +275,6 @@ export default function OrderOfflineB(props) {
                         className='btn btn-light '
                         style={{ width: "60px", height: "30px", fontSize: "20px", padding: "1px", margin: '1px' }}
                         onClick={() => {
-                            console.log(params.data.id)
                             downloadExcel(params.data.id)
                         }}
                     >
@@ -349,7 +344,6 @@ export default function OrderOfflineB(props) {
                         (<button className='btn btn-secondary'
                             onClick={() => {
                                 showOrderDetail(params.data)
-                                // console.log(params)
                             }
 
                             }>
@@ -571,7 +565,6 @@ export default function OrderOfflineB(props) {
         alertA(res.msg)
         getOrderDetail(orderId)
         setShowB(false)
-        console.log(res)
         setTotalAmaunt(res.totalAmount)
     }
     const editeOrderItem = (data) => {
@@ -727,7 +720,7 @@ export default function OrderOfflineB(props) {
 
                     <div className="orderoff-footer-div ">
 
-                        <table className='table table-bordered table-info orderOff-table' >
+                        <table className='table table-bordered table-dark orderOff-table' >
                             <thead>
                                 <tr key="">
                                     <th>سمت</th>

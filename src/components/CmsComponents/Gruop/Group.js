@@ -51,7 +51,6 @@ export default function Group() {
             headerName: 'عملیات', maxWidth: 200,
             cellRenderer: (params) => (
                 <>
-                    {/* <button className='btn btn-info' style={{ width: "30px", height: "15px", margin: "1px", fontSize: "8px", padding: "1px" }} onClick={() => console.log('object')}>+</button> */}
                     <button className='btn btn-danger' style={{ width: "30px", height: "15px", margin: "1px", fontSize: "8px", padding: "1px" }} onClick={() => deleteHandler(params.data.id)}>×</button>
                 </>
             )
@@ -63,7 +62,6 @@ export default function Group() {
         reset(setValue(""))
     }
     const handleRegistration = (data) => {
-        console.log(data)
         let obj = {
             id: null,
             text: data.text,

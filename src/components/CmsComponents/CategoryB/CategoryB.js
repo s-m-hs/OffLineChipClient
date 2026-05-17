@@ -90,7 +90,7 @@ export default function CategoryB() {
   }, [file]);
 
   /////////////////////////////////
-  const handleError = (errors) => {};
+  const handleError = (errors) => { };
 
   const registerOptions = {
     ItemCategoryTitle: { required: "Name is required" },
@@ -132,7 +132,6 @@ export default function CategoryB() {
   };
   /////////////////////////////////
   const handleRegistration = (data) => {
-    // console.log(data)
     if (!flagReg) {
       const registerHandler = (e) => {
         // e.preventDefault()
@@ -167,7 +166,6 @@ export default function CategoryB() {
           description: data.update.description,
           url: data.update.url,
         };
-        console.log(obj);
         ApiPut(
           "/api/CyProductCategory/updateProdCat",
           putId,
@@ -195,7 +193,6 @@ export default function CategoryB() {
         }
       )
         .then((res) => {
-          // console.log(res)
           if (res.status == 200) {
             return res.json();
           }
@@ -207,7 +204,6 @@ export default function CategoryB() {
           } else {
             setFlagSearch(false);
           }
-          // console.log(result)
         })
         .catch((err) => console.log(err));
     }
@@ -292,7 +288,6 @@ export default function CategoryB() {
           }
         })
         .catch((error) => {
-          // console.log(error)
           navigate("/errorpage");
         });
     }
@@ -423,7 +418,6 @@ export default function CategoryB() {
           }
         })
         .catch((error) => {
-          // console.log(error)
           navigate("/errorpage");
         });
     }
@@ -436,7 +430,6 @@ export default function CategoryB() {
   /////////////////////////////
   useEffect(() => {
     searchBox();
-    // console.log(searchBoxArr)
   }, [searchType]);
 
   useEffect(() => {
@@ -750,7 +743,6 @@ export default function CategoryB() {
                                 className="btn btn-info category-editbut"
                                 onClick={() => {
                                   window.scrollTo(0, 0);
-                                  // console.log(item)
                                   editHandler(
                                     item.id,
                                     item.code,
@@ -804,7 +796,6 @@ export default function CategoryB() {
                               <button
                                 className="btn btn-primary category-editbut"
                                 onClick={() => {
-                                  console.log(item);
                                   window.scrollTo(0, 0);
                                   ghg(item.id, item.text);
                                   setFlagPage(true);

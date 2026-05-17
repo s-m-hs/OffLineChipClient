@@ -90,7 +90,7 @@ export default function Order() {
     code: { required: "code is required" },
   };
 
-  const handleError = (errors) => {};
+  const handleError = (errors) => { };
 
   const notify = () => {
     // toast.success(`${title}`);
@@ -126,7 +126,6 @@ export default function Order() {
   const changeSMSbox = (e) => {
     setIsChecked(e.target.checked);
   };
-  // console.log(SMScheck)
 
   ///////////////////////////
   const fileChange = (e) => {
@@ -266,7 +265,6 @@ export default function Order() {
 
     const statusText = inputValues[id] || ""; // دریافت مقدار ورودی
     const obj = { itemID: id, statusText };
-    // console.log(obj); // چاپ شیء
 
     ApiPuX2("/api/CyOrders/updateItemStatus", obj, funcD);
   };
@@ -284,7 +282,6 @@ export default function Order() {
     const statusText = inputValuesB[id] || ""; // دریافت مقدار ورودی
     const obj = { itemID: id, statusText };
 
-    // console.log(obj); // چاپ شیء
 
     ApiPuX2("/api/CyOrders/updateItemInfo", obj, funcG);
   };
@@ -601,7 +598,7 @@ export default function Order() {
                                       name={`duration${item.id}`}
                                       {...register(`duration${item.id}`)}
                                       placeholder={item.duration}
-                                      // value={item.duration}
+                                    // value={item.duration}
                                     />
                                     {/* <span className="basket-table-data">روز</span> */}
                                   </td>
@@ -961,7 +958,7 @@ export default function Order() {
                     type="checkbox"
                     checked={isChecked}
                     onChange={changeSMSbox}
-                    // onChange={}
+                  // onChange={}
                   />
                   {/* <i class="fa-solid fa-comment-sms fa-lg" style= {{color:'#74C0FC'}}></i> */}
                 </div>
@@ -984,7 +981,7 @@ export default function Order() {
             draggable
             pauseOnHover
             theme="colored"
-            // transition="Zoom"
+          // transition="Zoom"
           />
 
           <label className="order--state-selectlabel">دسته بندی :</label>
@@ -1112,7 +1109,6 @@ export default function Order() {
                                 setTextArea("");
                                 setResultArray([]);
                                 reset(setValue(""));
-                                //  console.log(messageArray)
                               }}
                             >
                               ...
@@ -1133,7 +1129,7 @@ export default function Order() {
                       color="primary"
                       shape="rounded"
                       style={{ direction: "ltr" }}
-                      //  onClick={() => ChangePage(page)}
+                    //  onClick={() => ChangePage(page)}
                     />
                   )}
                 </div>

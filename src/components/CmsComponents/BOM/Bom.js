@@ -171,9 +171,7 @@ export default function BOM() {
     setFile(e.target.files[0]);
   };
 
-  const funcD = () => {
-    console.log("");
-  };
+
   const sendSMS = () => {
     async function myApp() {
       const res = await fetch(
@@ -188,7 +186,6 @@ export default function BOM() {
         }
       )
         .then((res) => {
-          console.log(res);
         })
         .catch((err) => console.log(err));
     }
@@ -288,7 +285,6 @@ export default function BOM() {
           }
         })
         .then((result) => {
-          console.log(result);
         })
         .catch((err) => console.log(err));
     }
@@ -425,7 +421,6 @@ export default function BOM() {
                             key={item.id}
                             className="btn btn-outline-info m-1 button_code "
                             onClick={() => {
-                              // console.log(item)
                               setOrderDetail([]);
                               setBOMId("");
                               setStatusText("");
@@ -509,8 +504,8 @@ export default function BOM() {
                           (filter) => filter.id == statusIntegger
                         )[0]
                           ? stateArraySelect.filter(
-                              (filter) => filter.id == statusIntegger
-                            )[0].state
+                            (filter) => filter.id == statusIntegger
+                          )[0].state
                           : "وضعیت را انتخاب کنید..."}
                       </option>
 
@@ -521,7 +516,7 @@ export default function BOM() {
                             <option
                               key={item.id}
                               value={item.id}
-                              // value={statusIntegger}
+                            // value={statusIntegger}
                             >
                               {item.state}
                             </option>
@@ -653,7 +648,7 @@ export default function BOM() {
             <div className="col-md-4">
               <div
                 className="bom-right-message-div"
-                //  ref={classRef}
+              //  ref={classRef}
               >
                 <div
                   className="centerr"
@@ -779,7 +774,7 @@ export default function BOM() {
                       type="checkbox"
                       checked={isChecked}
                       onChange={changeSMSbox}
-                      // onChange={}
+                    // onChange={}
                     />
                     {/* <i class="fa-solid fa-comment-sms fa-lg" style= {{color:'#74C0FC'}}></i> */}
                   </div>

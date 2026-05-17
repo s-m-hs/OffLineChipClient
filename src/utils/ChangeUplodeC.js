@@ -15,11 +15,9 @@ const ChangeUplodeC = (file, func1) => {
             body: formData,
         })
             .then((res) => {
-                console.log(res)
                 if (res.ok) {
                     return res.json().then((result) => {
                         if (result) {
-                            console.log(result)
                             func1(result.id)
                         }
                     })

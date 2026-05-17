@@ -13,7 +13,6 @@ const ApiPostX3 = (url, id, func) => {
       .then((res) => {
         if (res.ok) {
           return res.json().then((result) => {
-            // console.log(result);
             if (result) {
               func(result);
             }

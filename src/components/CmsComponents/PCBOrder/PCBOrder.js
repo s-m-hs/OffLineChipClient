@@ -60,7 +60,6 @@ export default function PCBOrder() {
 
   const changHandler = (e) => {
     setStatusText(e.target.value);
-    // console.log(e.target.value)
   };
 
   const changeSMSbox = (e) => {
@@ -152,7 +151,6 @@ export default function PCBOrder() {
         }
       )
         .then((res) => {
-          console.log(res);
         })
         .catch((err) => console.log(err));
     }
@@ -249,7 +247,6 @@ export default function PCBOrder() {
           }
         })
         .then((result) => {
-          console.log(result);
         })
         .catch((err) => console.log(err));
     }
@@ -267,7 +264,6 @@ export default function PCBOrder() {
     stackedLayers,
     name
   ) => {
-    // console.log(items)
     setPcbForm(items);
     setPcbFormId(id);
     setpcbFormStatusText(textstatus);
@@ -455,7 +451,7 @@ export default function PCBOrder() {
                       type="checkbox"
                       checked={isChecked}
                       onChange={changeSMSbox}
-                      // onChange={}
+                    // onChange={}
                     />
                     {/* <i class="fa-solid fa-comment-sms fa-lg" style= {{color:'#74C0FC'}}></i> */}
                   </div>
@@ -508,7 +504,6 @@ export default function PCBOrder() {
                             key={item.id}
                             className="btn btn-outline-info m-1 button_code "
                             onClick={() => {
-                              // console.log(pcbArray);
                               setPcbStatus(item.status);
                               setGuIdB("");
                               setGuIdC("");

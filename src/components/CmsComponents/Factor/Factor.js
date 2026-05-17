@@ -22,7 +22,6 @@ import { useForm } from "react-hook-form";
 import BaseGrid from '../../Grid/BaseGrid';
 import apiUrl from '../../../utils/ApiConfig';
 import alertA from '../../../utils/AlertFunc/AlertA';
-import { Mosaic } from 'react-loading-indicators';
 import AlertError from '../../../utils/AlertFunc/AlertError';
 import LodingA from '../../../utils/LodingA';
 import { Link, useNavigate } from 'react-router-dom';
@@ -31,38 +30,13 @@ import UploadFileIcon from "@mui/icons-material/UploadFile";
 import {
     MagnifyingGlass,
     Plus,
-    Phone,
-    SignIn,
-    BuildingApartment,
     Barcode,
-    UserCheck,
-    SignOut,
-    Wrench,
-    Fingerprint,
-    ShoppingCart,
-    User,
-    EnvelopeSimple,
-    House,
-    TextIndent,
-    XCircle,
-    SunDim,
-    UserCircleGear,
-    ChatText,
-    ChatCircleText,
-    Bell,
-    ExclamationMark,
-    Laptop,
-    UsersThree,
-    Eyeglasses,
-    EyeSlash,
-    Eyes, Eye
-
 } from "@phosphor-icons/react";
-import { Add, Close, CloseOutlined, CloseRounded, CloseSharp, More, MoreHorizOutlined, MoreHorizRounded, MoreHorizSharp, MoreTime, MoreVert, Save, SaveAlt, SaveAs, SaveOutlined, Search, SearchOffOutlined, SearchSharp } from '@mui/icons-material';
+import { Add, Close, CloseOutlined, MoreHorizOutlined, SaveOutlined, Search, } from '@mui/icons-material';
 import ChangeUplode from '../../../utils/ChangeUplode';
 import DownloadFile from '../../../utils/DownloadFile';
 import { Pending } from '../../../utils/Enums';
-import { CloseButton } from 'react-bootstrap';
+
 const Factor = (props) => {
     const cmsContext = useContext(CmsContext);
     const homeContext = useContext(HomeContext);

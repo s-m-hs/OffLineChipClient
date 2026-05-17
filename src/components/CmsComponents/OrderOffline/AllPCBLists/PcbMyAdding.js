@@ -122,7 +122,6 @@ export default function PcbMyAdding(props) {
                         className='btn btn-light '
                         style={{ width: "60px", height: "30px", fontSize: "20px", padding: "1px", margin: '1px' }}
                         onClick={() => {
-                            // console.log(params)
                             setOrderId(params.data.id)
                             getOrderDetails(params.data.id)
                             setOrderStatusEnum(params.data.status)
@@ -522,7 +521,7 @@ export default function PcbMyAdding(props) {
                                     {/* row 2 */}
 
 
-                                    <table className='table table table-bordered  pcbmyadding-table'>
+                                    <table className='table table table-bordered table-info pcbmyadding-table'>
 
                                         <tbody>
                                             <tr key="">

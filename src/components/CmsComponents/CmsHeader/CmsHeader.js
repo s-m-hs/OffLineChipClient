@@ -76,7 +76,6 @@ export default function CmsHeader() {
 
   useEffect(() => {
     getUnSeenNotif()
-    console.log(notifCount)
   }, [notifCount])
   const LogOut = () => {
     async function myApp() {

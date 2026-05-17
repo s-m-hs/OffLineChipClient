@@ -104,7 +104,6 @@ export default function User() {
     getuserItem();
   };
   const handleRegistration = (data) => {
-    // console.log(data)
     if (!flagUpdate) {
       let obj = {
         id: null,
@@ -116,7 +115,6 @@ export default function User() {
         cyGoroohID: data.group,
         cyVahedID: data.vahed
       };
-      // console.log(obj)
       ApiPostX("/api/CyUsers", obj, funcA);
     } else if (flagUpdate) {
       let obj = {

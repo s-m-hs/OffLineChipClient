@@ -13,7 +13,6 @@ const ApiPostX0 = (url, obj, func) => {
             body: JSON.stringify(obj),
         })
             .then((res) => {
-                console.log(res)
                 if (res.ok) {
                     return res.json().then((result) => {
                         func(result)

@@ -14,18 +14,8 @@ let LogOut = () => {
         "Content-Type": "application/json",
       },
     }).then((res) => {
-      console.log(res);
       if (res.ok) {
-        // navigatt("/");
-        // Swal.fire({
-        //   position: "center",
-        //   icon: "info",
-        //   title: "با موفقیت از حساب کاربری خارج شدید...",
-        //   showConfirmButton: false,
-        //   timer: 2000,
-        // }).then((res) => {
-        //   navigatt("/");
-        // });
+
       }
     });
   }

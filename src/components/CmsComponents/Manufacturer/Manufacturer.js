@@ -52,7 +52,7 @@ export default function Manufacturer() {
   ///////////////////
 
   ////////////////////////////////
-  const handleError = (errors) => {};
+  const handleError = (errors) => { };
 
   ////////////////////////////////
   const handleChange = (event, value) => {
@@ -135,7 +135,6 @@ export default function Manufacturer() {
         }
       )
         .then((res) => {
-          //   console.log(res)
           if (res.status == 200) {
             return res.json();
           }
@@ -147,7 +146,6 @@ export default function Manufacturer() {
           } else {
             setFlagSearch(false);
           }
-          //   console.log(result)
         });
     }
     myApp();

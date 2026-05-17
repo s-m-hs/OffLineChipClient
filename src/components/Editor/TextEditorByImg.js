@@ -13,8 +13,7 @@ const CustomToolbar = () => (
     <button className="ql-underline"></button>
     <button className="ql-link"></button>
     {/* دکمه سفارشی آپلود تصویر */}
-    <button type="button" className="ql-custom-image" onClick={()=>{
-        console.log('object')
+    <button type="button" className="ql-custom-image" onClick={() => {
     }}>
       📷
     </button>
@@ -28,7 +27,7 @@ const TextEditor = ({ value, onChange, isDark }) => {
   const fileUploadHandler = async (file) => {
     const formData = new FormData();
     formData.append('File', file);
-  
+
     try {
       const response = await fetch(`${apiUrl}/api/CyFiles/upload`, {
         method: 'POST',
@@ -36,13 +35,13 @@ const TextEditor = ({ value, onChange, isDark }) => {
       });
       const result = await response.json();
       const imageUrl = result.adress;
-  
+
       // افزودن تصویر به ادیتور
       const quillEditor = quillRef.current.getEditor();
-  
+
       // اطمینان از فوکوس ادیتور
       quillEditor.focus();
-  
+
       // گرفتن موقعیت نشانگر
       const range = quillEditor.getSelection();
       if (range) {
@@ -56,7 +55,7 @@ const TextEditor = ({ value, onChange, isDark }) => {
       console.error('Error uploading image:', error);
     }
   };
-  
+
   // هندلر کلیک برای دکمه سفارشی
   const handleCustomImageClick = () => {
     const input = document.createElement('input');
@@ -74,18 +73,18 @@ const TextEditor = ({ value, onChange, isDark }) => {
   // تنظیمات ماژول
   const modules = {
     toolbar: {
-        toolbar: [
-            [{ 'font': [ 'serif', 'monospace'] }],  // Custom font family list
-            [{ 'size': ['small', false, 'large', 'huge'] }],  // Custom font size list
-            [{ 'color': [] }, { 'background': [] }],  // Text color and background color
-            [{ 'header': '1' }, { 'header': '2' }],
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-            ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-            [{ 'align': [] }],
-            [{ 'direction': 'rtl' }],
-            ['link', 'image', 'video'],
-            ['clean']
-        ],
+      toolbar: [
+        [{ 'font': ['serif', 'monospace'] }],  // Custom font family list
+        [{ 'size': ['small', false, 'large', 'huge'] }],  // Custom font size list
+        [{ 'color': [] }, { 'background': [] }],  // Text color and background color
+        [{ 'header': '1' }, { 'header': '2' }],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+        [{ 'align': [] }],
+        [{ 'direction': 'rtl' }],
+        ['link', 'image', 'video'],
+        ['clean']
+      ],
       container: '#toolbar', // اتصال به تولبار سفارشی
       handlers: {
         'custom-image': handleCustomImageClick, // اتصال هندلر کلیک

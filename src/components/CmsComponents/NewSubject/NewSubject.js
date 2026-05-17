@@ -106,8 +106,8 @@ export default function NewSubject({ showw }) {
         editorButState == "1"
           ? ckValue
           : editorButState == "2"
-          ? cmsContext.isolaLocal?.outerHTML
-          : "",
+            ? cmsContext.isolaLocal?.outerHTML
+            : "",
       tag: data.tag,
       extra: data.extra,
       dateShow: value4,
@@ -118,15 +118,11 @@ export default function NewSubject({ showw }) {
       orderValue: 0,
       cyCategoryId: data.category,
     };
-    console.log(paragraphs);
-    console.log(obj);
-    // console.log(editorButState);
-    // console.log(cmsContext.isolaLocal.outerHTML);
+
     ApiPostX("/api/CySubjects", obj, funcA);
   };
   ////////////////////////////////
   const categoryIdChild = () => {
-    // console.log('first')
   };
   //////////////////////
   const GetCategoryItem = () => {

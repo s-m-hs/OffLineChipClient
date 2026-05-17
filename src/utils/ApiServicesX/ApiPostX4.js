@@ -12,10 +12,8 @@ const ApiPostX4 = (url, obj, func1, func2) => {
       body: JSON.stringify(obj),
     })
       .then((res) => {
-        // console.log(res);
         if (res.ok) {
           return res.json().then((result) => {
-            // console.log(result);
             if (result) {
               func1(result);
               func2(result.allCount);

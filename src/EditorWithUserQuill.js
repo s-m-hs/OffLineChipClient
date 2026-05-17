@@ -9,32 +9,30 @@ import React from 'react'
 
 export default function Editor() {
 
-    const { quill, quillRef, Quill } = useQuill({
-        modules: { blotFormatter: {} }
+  const { quill, quillRef, Quill } = useQuill({
+    modules: { blotFormatter: {} }
+  });
+
+  if (Quill && !quill) {
+    // const BlotFormatter = require('quill-blot-formatter');
+    Quill.register('modules/blotFormatter', BlotFormatter);
+  }
+
+  useEffect(() => {
+    if (quill) {
+      quill.on('text-change', (delta, oldContents) => {
+
+
+        let currrentContents = quill.getContents();
       });
-    
-      if (Quill && !quill) {
-        // const BlotFormatter = require('quill-blot-formatter');
-        Quill.register('modules/blotFormatter', BlotFormatter);
-      }
-    
-      useEffect(() => {
-        if (quill) {
-          quill.on('text-change', (delta, oldContents) => {
-            // console.log('Text change!');
-            // console.log(delta);
-    
-            let currrentContents = quill.getContents();
-            // console.log(currrentContents.diff(oldContents));
-          });
-        }
-      }, [quill, Quill]);
-    
-      return (
-        <div>
-          <div ref={quillRef} />
-        </div>
-      );
+    }
+  }, [quill, Quill]);
+
+  return (
+    <div>
+      <div ref={quillRef} />
+    </div>
+  );
 
 }
 
