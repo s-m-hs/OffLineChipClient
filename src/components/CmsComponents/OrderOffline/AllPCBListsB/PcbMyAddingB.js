@@ -428,7 +428,7 @@ export default function PcbMyAddingB(props) {
 
                         {((userDetail.role == "PurchasingExpert" || userDetail.role == "PurchasingManager")
                             // && (orderStatusEnum != 15 || orderStatusEnum == 20)
-                        ) && orderStatusEnum != 35 &&
+                        ) && orderStatusEnum != 35 && orderStatusEnum != 20 &&
                             <button
                                 type='button'
                                 onClick={handleSave}
@@ -556,6 +556,7 @@ export default function PcbMyAddingB(props) {
                                                                 <input
                                                                     name="amount"
                                                                     type="number"
+                                                                    step="0.01"
                                                                     placeholder=""
                                                                     className={errors.amount ? "formerror" : ""}
                                                                     {...register(

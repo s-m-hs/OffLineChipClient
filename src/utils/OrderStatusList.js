@@ -17,7 +17,6 @@ export const PCBTypes = [
     { enumId: 4, typee: 'PickAndPlace' },
     { enumId: 5, typee: 'BOM' }
 ]
-
 export const UserType = [
     { name: 'مدیربرنامه', userType: "SysAdmin", enum: 8 },
     { name: 'کارشناس گروه', userType: "GroupExpert", enum: 10 },///کارشناس گروه

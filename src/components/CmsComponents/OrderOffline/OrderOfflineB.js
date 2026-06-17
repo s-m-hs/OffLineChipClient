@@ -562,7 +562,7 @@ export default function OrderOfflineB(props) {
         setShowB(true)
     }
     const getOrderItem = (res) => {
-        alertA(res.msg)
+        alertA('')
         getOrderDetail(orderId)
         setShowB(false)
         setTotalAmaunt(res.totalAmount)

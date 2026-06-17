@@ -21,6 +21,8 @@ import AlertQ from '../../../../utils/AlertFunc/AlertQ';
 import ChatPanel from '../ChatPanel';
 import { useLocation } from 'react-router-dom';
 import LodingA from '../../../../utils/LodingA';
+import ChangeUplodeD from '../../../../utils/ChangeUplodeD';
+import { Bom, Gerber, MI, PickAndPlace, StackLayer } from '../../../../utils/Enums';
 
 export default function PcbMyAdding(props) {
     let { userDetail, setUserDetail } = useContext(CmsContext)
@@ -613,7 +615,28 @@ export default function PcbMyAdding(props) {
                                                                 setGuIdA(id);
                                                                 setLoadingFlag(false)
                                                             };
-                                                            ChangeUplodeC(e.target.files[0], funcB)
+                                                            if (fileType == Gerber) {
+                                                                ChangeUplodeD(e.target.files[0], funcB, {
+                                                                    allowedExtensions: ['rar', 'zip'],
+                                                                    onError: (error) => { setLoadingFlag(false) }
+                                                                });
+                                                            } else if (fileType == StackLayer) {
+                                                                ChangeUplodeD(e.target.files[0], funcB, {
+                                                                    allowedExtensions: ['jpg', 'jpeg', 'png', 'gif', 'webp'],
+                                                                    onError: (error) => { setLoadingFlag(false) }
+                                                                });
+                                                            } else if (fileType == MI) {
+                                                                ChangeUplodeD(e.target.files[0], funcB, {
+                                                                    allowedExtensions: ['pdf'],
+                                                                    onError: (error) => { setLoadingFlag(false) }
+                                                                });
+                                                            } else if (fileType == PickAndPlace || fileType == Bom) {
+                                                                ChangeUplodeD(e.target.files[0], funcB, {
+                                                                    allowedExtensions: ['xls', 'xlsx', 'csv'],
+                                                                    onError: (error) => { setLoadingFlag(false) }
+                                                                });
+                                                            }
+                                                            // ChangeUplodeC(e.target.files[0], funcB)
                                                             e.target.value = null
                                                             // setflag(!flag)
                                                         }}
