@@ -16,6 +16,7 @@ const BaseGrid = React.forwardRef((props, ref) => {
                     filter: true,
                     resizable: true,
                     maxWidth: props.maxWidth,
+                    minWidth: props.minWidth,
                     suppressHeaderMenuButton: true,
                     filter: true,
                     // tooltipComponent: 'customTooltip'

@@ -10,12 +10,16 @@ import ApiGetX2 from '../../../utils/ApiServicesX/ApiGetX2';
 import ApiPostX from '../../../utils/ApiServicesX/ApiPostX';
 import alertA from '../../../utils/AlertFunc/AlertA';
 import ApiDeleteX from '../../../utils/ApiServicesX/ApiDeleteX';
+import ApiPuX2 from '../../../utils/ApiServicesX/ApiPutX2';
+import { RotateLeft } from '@mui/icons-material';
 // import 'ag-grid-community/styles/ag-grid.css';
 // import 'ag-grid-community/styles/ag-theme-alpine.css';
 export default function Group() {
     const [flagUpdate, setFlagUpdate] = useState(false);
     const [allGroup, setAllGroup] = useState([]);
     const [allVahed, setAllVahed] = useState([]);
+    const [putId, setPutId] = useState("");
+
     const {
         register,
         handleSubmit,
@@ -51,7 +55,15 @@ export default function Group() {
             headerName: 'عملیات', maxWidth: 200,
             cellRenderer: (params) => (
                 <>
-                    <button className='btn btn-danger' style={{ width: "30px", height: "15px", margin: "1px", fontSize: "8px", padding: "1px" }} onClick={() => deleteHandler(params.data.id)}>×</button>
+                    <button className='btn btn-info' style={{ width: "60px", height: "30px", margin: "1px", fontSize: "12px", padding: "1px" }} onClick={() =>
+                        editHandler(
+                            params.data.id,
+                            params.data.text,
+                            params.data.code,
+                            params.data.vahedId,
+                        )
+                    }>ویرایش</button>
+                    <button className='btn btn-danger' style={{ width: "60px", height: "30px", margin: "1px", fontSize: "12px", padding: "1px" }} onClick={() => deleteHandler(params.data.id)}>حذف</button>
                 </>
             )
         }
@@ -61,17 +73,50 @@ export default function Group() {
         getGroup()
         reset(setValue(""))
     }
-    const handleRegistration = (data) => {
-        let obj = {
-            id: null,
-            text: data.text,
-            code: data.code,
-            VahedId: data.vahed
-        }
-        ApiPostX(`/api/CyGroupVahed/addGroup`, obj, funA)
+    function funB() {
+        alertA("گروه جدید با موفقیت ویرایش شد")
+        getGroup()
+        reset(setValue(""))
 
     }
+    const handleRegistration = (data) => {
+        if (!flagUpdate) {
+            let obj = {
+                id: null,
+                text: data.text,
+                code: data.code,
+                VahedId: data.vahed
+            }
+            ApiPostX(`/api/CyGroupVahed/addGroup`, obj, funA)
+        } else {
+            let obj = {
+                id: putId,
+                text: data.update.text,
+                code: data.update.code,
+                VahedId: data.update.vahed
+            }
+            ApiPuX2(`/api/CyGroupVahed/editGroup`, obj, funB)
+        }
 
+
+    }
+    /////////////////////
+    const editHandler = (...data) => {
+        setPutId(data[0]);
+        setFlagUpdate(true);
+        setValue("update", {
+            text: data[1],
+            code: data[2],
+            vahed: data[3],
+        });
+    };
+    /////////////////
+
+    /////////////////
+    const resetUpdatField = () => {
+        setFlagUpdate(false);
+        reset(setValue(""));
+    };
     const getGroup = () => {
         ApiGetX2(`/api/CyGroupVahed/getGroup`, setAllGroup)
     }
@@ -149,11 +194,8 @@ export default function Group() {
                         <div className='group-div-Alert mt-5'><label> ⚠️نام و کد گروه نباید تکراری باشد </label></div>
                         {flagUpdate && (
                             <div className="user-resticon">
-                                <i
-                                    class="fa-solid fa-rotate-left fa-2xl"
-                                    style={{ color: " #74C0FC" }}
-                                // onClick={resetUpdatField}
-                                ></i>
+                                <RotateLeft style={{ fontSize: "35px", color: " #74C0FC" }} onClick={resetUpdatField} />
+
                             </div>
                         )}
 

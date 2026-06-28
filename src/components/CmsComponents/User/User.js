@@ -15,6 +15,9 @@ import ApiPutX from "../../../utils/ApiServicesX/ApiPutX";
 import ApiGetX from "../../../utils/ApiServicesX/ApiGetX";
 import ApiDeleteX from "../../../utils/ApiServicesX/ApiDeleteX";
 import ApiGetX2 from "../../../utils/ApiServicesX/ApiGetX2";
+import BaseGrid from "../../Grid/BaseGrid";
+import { RotateLeft } from "@mui/icons-material";
+import ApiPutX0 from "../../../utils/ApiServicesX/ApiPutX0";
 
 export default function User() {
   const [userArray, setuserArray] = useState([]);
@@ -27,12 +30,12 @@ export default function User() {
   const [allAccess, setAllAccess] = useState([])
   const [allGroup, setAllGroup] = useState([])
   const [allVahed, setAllVahed] = useState([])
-  // const headerAuth = `Bearer ${cmsContext.token.token}`;
   const {
     register,
     handleSubmit,
     reset,
     setValue,
+    getValues,
     watch,
     formState: { errors },
   } = useForm({
@@ -42,7 +45,7 @@ export default function User() {
     userName: { required: "userName is required" },
     password: { required: "password is required" },
     userStatus: { required: "userStatus is required" },
-    userUserType: { required: "userUserType is required" },
+    userType: { required: "userType is required" },
     accessLevel: { required: "accessLevel is required" },
   };
   ///////////////////
@@ -61,6 +64,63 @@ export default function User() {
     { id: 3, status: "غیرفعال", statusId: 2 },
   ];
 
+  const [colDefs] = useState([
+    { field: '', headerName: "شماره" },
+    { field: 'userName', headerName: "نام کاربری" },
+    {
+      field: 'userType', headerName: "سمت", cellRenderer: (params) => (
+        <span>{userUserType.filter((filter) => { return filter.UserTypeId == params.data.userType })[0] &&
+          userUserType.filter(filter => { return filter.UserTypeId == params.data.userType })[0].UserType
+        } </span>
+      )
+    },
+    { field: 'access', headerName: "سطح دسترسی" },
+    { field: 'vahed', headerName: "واحد" },
+    { field: 'group', headerName: "گروه" },
+    {
+      field: 'status', headerName: "وضعیت کاربر", cellRenderer: (params) => (
+        <span>
+          {userStatus.filter((filter) => {
+            return filter.statusId == params.data.userStatus
+              ;
+          })[0] &&
+            userStatus.filter((filter) => {
+              return filter.statusId == params.data.userStatus
+                ;
+            })[0].status}
+        </span>
+      )
+    },
+    {
+      field: '', headerName: "ویرایش/حذف", minWidth: 250, cellRenderer: (params) => (
+        <>
+          <button
+            className="btn btn-info user-editbut"
+            onClick={() =>
+              editHandler(
+                params.data.id,
+                params.data.userName,
+                params.data.userStatus,
+                params.data.userType,
+                params.data.accessID,
+                params.data.vahedID,
+                params.data.groupID,
+
+              )
+            }
+          >
+            ویرایش
+          </button>
+          <button
+            className="btn btn-danger user-deletbut"
+            onClick={() => deleteHandler(params.data.id)}
+          >
+            حذف
+          </button>
+        </>
+      )
+    },
+  ])
   // {
   //     /// <summary>
   //     /// تعیین نقش نشده 
@@ -104,13 +164,14 @@ export default function User() {
     getuserItem();
   };
   const handleRegistration = (data) => {
+    console.log(data)
     if (!flagUpdate) {
       let obj = {
         id: null,
         cyUsNm: data.userName,
         cyHsPs: data.password,
         status: Number(data.userStatus),
-        userType: Number(data.userUserType),
+        userType: Number(data.userType),
         accessTableID: data.accessLevel,
         cyGoroohID: data.group,
         cyVahedID: data.vahed
@@ -122,39 +183,12 @@ export default function User() {
         cyUsNm: data.update.userName,
         cyHsPs: data.update.password,
         status: Number(data.update.userStatus),
-        userType: Number(data.update.userUserType),
-        // accessTableID: 
-        //   cyGoroohID:
-        // cyVahedID:
+        userType: Number(data.update.userType),
+        accessTableID: (data.update.accessLevel),
+        cyGoroohID: (data.update.group),
+        cyVahedID: (data.update.vahed)
       };
       ApiPutX("/api/CyUsers", putId, obj, funcB);
-
-      // async function myAppPut() {
-      //   const res = await fetch(`${apiUrl}/api/CyUsers/${putId}`, {
-      //     method: 'PUT',
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify(obj)
-      //   }).then(res => {
-      //     if (res.ok) {
-      //       Swal.fire({
-      //         position: "center",
-      //         icon: "success",
-      //         title: "ویرایش با موفقیت انجام شد",
-      //         showConfirmButton: false,
-      //         timer: 1500,
-      //       });
-      //       reset(
-      //         setValue('')
-      //       )
-      //       setFlagUpdate(false)
-      //       getuserItem()
-      //     }
-      //   }
-      //   ).catch(err=>console.log(err))
-      // }
-      // myAppPut()
     }
   };
   /////////////////////////////////
@@ -175,9 +209,11 @@ export default function User() {
     setFlagUpdate(true);
     setValue("update", {
       userName: data[1],
-      password: data[2],
-      userStatus: data[3],
-      userUserType: data[4],
+      userStatus: data[2],
+      userType: data[3],
+      accessLevel: data[4],
+      vahed: data[5],
+      group: data[6],
     });
   };
   /////////////////
@@ -186,8 +222,9 @@ export default function User() {
     reset(setValue(""));
   };
   //////////////////
+  // const selectedVahed = 'watch(!flagUpdate ? "vahed" : "update.vahed")';
   const selectedVahed = watch(!flagUpdate ? "vahed" : "update.vahed");
-  const selectedVahedB = watch(!flagUpdate ? "userUserType" : "update.userUserType");
+  const selectedVahedB = watch(!flagUpdate ? "userType" : "update.userType");
 
   useEffect(() => {
     if (selectedVahed) {
@@ -277,13 +314,13 @@ export default function User() {
               <label className="user-col3-selectlabel"> سمت کاربر:</label>
               <select
                 className={
-                  errors.userUserType
+                  errors.userType
                     ? "user-col3-select formerror"
                     : "user-col3-select"
                 }
                 {...register(
-                  !flagUpdate ? "userUserType" : "update.userUserType",
-                  registerOptions.userUserType
+                  !flagUpdate ? "userType" : "update.userType",
+                  registerOptions.userType
                 )}
               >
                 <option value="">انتخاب کنید...</option>
@@ -298,6 +335,7 @@ export default function User() {
 
               <hr />
               <label className="user-col3-selectlabel"> سطح دسترسی :</label>
+
               <select
                 className={
                   errors.accessLevel
@@ -309,6 +347,7 @@ export default function User() {
                   registerOptions.accessLevel
                 )}
               >
+
                 <option value="">انتخاب کنید...</option>
                 {allAccess.map((item) => (
                   <option key={item.id} value={item.id}>
@@ -321,6 +360,7 @@ export default function User() {
               <hr />
 
               <label className="user-col3-selectlabel">واحد :</label>
+
               <select
                 className="user-col3-select"
                 {...register(
@@ -340,6 +380,7 @@ export default function User() {
 
               <hr />
               <label className="user-col3-selectlabel">گروه :</label>
+
               <select
                 className="user-col3-select"
                 disabled={!selectedVahed}
@@ -357,15 +398,12 @@ export default function User() {
 
 
 
-              {flagUpdate && (
-                <div className="user-resticon">
-                  <i
-                    class="fa-solid fa-rotate-left fa-2xl"
-                    style={{ color: " #74C0FC" }}
-                    onClick={resetUpdatField}
-                  ></i>
-                </div>
-              )}
+
+              <div className="user-resticon">
+                <RotateLeft style={{ fontSize: "35px", color: " #74C0FC" }} onClick={resetUpdatField} />
+
+              </div>
+
 
               <Button
                 className="user-regbutton"
@@ -390,80 +428,15 @@ export default function User() {
                 />
               </div>
             ) : (
-              <DataTable title={"لیست کاربران :"}>
-                <table
-                  className={
-                    !homeContext.themContext
-                      ? "table table-striped  user-table"
-                      : "table table-striped table-dark user-table"
-                  }
-                >
-                  <thead>
-                    <tr>
-                      <th>شماره</th>
-                      <th>نام کاربری</th>
-                      <th>سمت</th>
-                      <th>سطح دسترسی</th>
-                      <th>واحد</th>
-                      <th>گروه</th>
-                      <th>وضعیت کاربر</th>
-                      <th>حذف</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {userArray.map((item, index) => (
-                      <tr key={item.id}>
-                        <td>{index + 1}</td>
-                        <td>{item.userName}</td>
-
-                        <td>{userUserType.filter((filter) => { return filter.UserTypeId == item.userType })[0] &&
-                          userUserType.filter(filter => { return filter.UserTypeId == item.userType })[0].UserType
-                        } </td>
-
-                        <td>{item.access}</td>
-                        <td>{item.vahed}</td>
-                        <td>{item.group}</td>
+              <>
+                <BaseGrid rowData={userArray} colDefs={colDefs} tableWidth="600px" rtl={true} />
 
 
-                        <td>
-                          {userStatus.filter((filter) => {
-                            return filter.statusId == item.userStatus
-                              ;
-                          })[0] &&
-                            userStatus.filter((filter) => {
-                              return filter.statusId == item.userStatus
-                                ;
-                            })[0].status}{" "}
-                        </td>
+
+              </>
 
 
-                        <td>
-                          {/* <button
-                            className="btn btn-info user-editbut"
-                            onClick={() =>
-                              editHandler(
-                                item.id,
-                                item.cyUsNm,
-                                item.cyHsPs,
-                                item.status,
-                                item.userType
-                              )
-                            }
-                          >
-                            ویرایش
-                          </button> */}
-                          <button
-                            className="btn btn-danger user-deletbut"
-                            onClick={() => deleteHandler(item.id)}
-                          >
-                            حذف
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </DataTable>
+
             )}
           </div>
         </div>

@@ -23,12 +23,13 @@ export default function CmsSidebarContent() {
   const [roleState, setRoleState] = useState(parseInt(getlocalRole));
 
   const hasAccess = (field) => {
-    if (roleState === 8 || roleState === 16 || roleState === 15) return true; // دسترسی کامل
+    if (roleState === 8 || roleState === 16) return true; // دسترسی کامل
     const accessMap = {
-      NOpurchasing: [10, 12, 13, 16, 4],
+      NOpurchasing: [10, 12, 13, 16, 4, 15],
       purchasing: [11, 14, 16, 4],
-      products: [5, 6, 4],
-      levelAccess: [16],
+      products: [11, 14, 16, 4, 15],
+      levelAccess: [16, 15],
+
 
     };
     return accessMap[field]?.includes(roleState) || false;
@@ -94,14 +95,16 @@ export default function CmsSidebarContent() {
           </NavLink>
 
 
-          <NavLink className="cmssidebar-div" to={"ManagePage"}>
-            <MdManageAccounts size={20} style={{ marginLeft: "5px" }} />
-            <span>مدیریت عمومی</span>
-          </NavLink>
+
         </>
 
       )}
-
+      {hasAccess("products") && (
+        <NavLink className="cmssidebar-div" to={"ManagePage"}>
+          <MdManageAccounts size={20} style={{ marginLeft: "5px" }} />
+          <span>مدیریت عمومی</span>
+        </NavLink>
+      )}
       <NavLink className="cmssidebar-div" to={"KarPooshe"}>
         <FaFolderOpen size={20} style={{ marginLeft: "5px" }} />        <span> کار پوشه </span>
       </NavLink>

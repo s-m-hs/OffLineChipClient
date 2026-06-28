@@ -10,11 +10,15 @@ import ApiGetX2 from '../../../utils/ApiServicesX/ApiGetX2';
 import ApiPostX from '../../../utils/ApiServicesX/ApiPostX';
 import alertA from '../../../utils/AlertFunc/AlertA';
 import ApiDeleteX from '../../../utils/ApiServicesX/ApiDeleteX';
+import ApiPuX2 from '../../../utils/ApiServicesX/ApiPutX2';
+import { RotateLeft } from '@mui/icons-material';
 // import 'ag-grid-community/styles/ag-grid.css';
 // import 'ag-grid-community/styles/ag-theme-alpine.css';
 export default function Vahed() {
     const [flagUpdate, setFlagUpdate] = useState(false);
     const [allVahed, setAllVahed] = useState([]);
+    const [putId, setPutId] = useState("");
+
     const {
         register,
         handleSubmit,
@@ -52,7 +56,14 @@ export default function Vahed() {
             cellRenderer: (params) => (
                 <>
 
-                    <button className='btn btn-danger' style={{ width: "30px", height: "15px", margin: "1px", fontSize: "8px", padding: "1px" }} onClick={() => deleteHandler(params.data.id)}>×</button>
+                    <button className='btn btn-info' style={{ width: "60px", height: "30px", margin: "1px", fontSize: "12px", padding: "1px" }} onClick={() =>
+                        editHandler(
+                            params.data.id,
+                            params.data.text,
+                            params.data.code,
+                        )
+                    }>ویرایش</button>
+                    <button className='btn btn-danger' style={{ width: "60px", height: "30px", margin: "1px", fontSize: "12px", padding: "1px" }} onClick={() => deleteHandler(params.data.id)}>حذف</button>
                 </>
             )
         }
@@ -63,16 +74,50 @@ export default function Vahed() {
         reset(setValue(""))
 
     }
+    function funB() {
+        alertA("واحد جدید با موفقیت ویرایش شد")
+        getVahed()
+        reset(setValue(""))
+
+    }
     const handleRegistration = (data) => {
-        let obj = {
-            id: null,
-            text: data.text,
-            code: data.code,
+        if (!flagUpdate) {
+            let obj = {
+                id: null,
+                text: data.text,
+                code: data.code,
+
+            }
+            ApiPostX(`/api/CyGroupVahed/addVahed`, obj, funA)
+        } else {
+            let obj = {
+                id: putId,
+                text: data.update.text,
+                code: data.update.code,
+            }
+            ApiPuX2(`/api/CyGroupVahed/editVahed`, obj, funB)
 
         }
-        ApiPostX(`/api/CyGroupVahed/addVahed`, obj, funA)
+
     }
 
+    /////////////////////
+    const editHandler = (...data) => {
+        setPutId(data[0]);
+        setFlagUpdate(true);
+        setValue("update", {
+            text: data[1],
+            code: data[2],
+        });
+    };
+    /////////////////
+
+    /////////////////
+    const resetUpdatField = () => {
+        setFlagUpdate(false);
+        reset(setValue(""));
+    };
+    //////////////////
     const getVahed = () => {
         ApiGetX2(`/api/CyGroupVahed/getVahed`, setAllVahed)
     }
@@ -128,11 +173,8 @@ export default function Vahed() {
 
                         {flagUpdate && (
                             <div className="user-resticon">
-                                <i
-                                    class="fa-solid fa-rotate-left fa-2xl"
-                                    style={{ color: " #74C0FC" }}
-                                // onClick={resetUpdatField}
-                                ></i>
+                                <RotateLeft style={{ fontSize: "35px", color: " #74C0FC" }} onClick={resetUpdatField} />
+
                             </div>
                         )}
 
