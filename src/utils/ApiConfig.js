@@ -1,6 +1,9 @@
 //for chipyab
 
-const apiUrl = "https://offapi.chipyab.com"
+
+const apiUrl = window.APP_CONFIG.apiUrl;
+
+// const apiUrl = "https://offapi.chipyab.com"
 
 // const apiUrl = "https://newoffapi.chipyab.com"
 
