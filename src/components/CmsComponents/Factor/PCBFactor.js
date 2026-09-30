@@ -265,7 +265,7 @@ export default function PCBFactor() {
                                 !flagUpdate ? "PriJCode" : "update.PriJCode", registerOptions.PriJCode
                             )}
                         />
-                        <label style={{ fontSize: "15px" }}> کد پروژه</label>
+                        <label style={{ fontSize: "15px" }}>کد سفارش</label>
                         <div className='Factor-searchPartNumber-div'>
 
                         </div>

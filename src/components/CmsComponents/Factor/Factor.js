@@ -167,6 +167,7 @@ const Factor = (props) => {
     }, [orderItems, calculateTotals]);
 
     const handleRegistration = (data) => {
+        if (getValues("PriJCode") === "") return AlertError("کد سفارش  تنظیم نشده ")
         setLoadingFlag(true)
         setOrderItemError(false)
         setOrderItemErrorList([])
@@ -182,6 +183,7 @@ const Factor = (props) => {
         });
 
         setOrderItemError(hasError);
+
         if (!hasError) {  // استفاده از متغیر محلی
             orderItems.forEach(item => item.ID = null);
             const orderStatus = Pending
@@ -395,7 +397,7 @@ const Factor = (props) => {
                                 !flagUpdate ? "PriJCode" : "update.PriJCode"
                             )}
                         />
-                        <label style={{ fontSize: "15px" }}> کد پروژه</label>
+                        <label style={{ fontSize: "15px" }}> کد سفارش</label>
                         <div className='Factor-searchPartNumber-div'>
 
                         </div>
